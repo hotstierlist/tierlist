@@ -150,6 +150,30 @@
 	border-right: none;
     border-bottom: none;
   }
+
+.description-cell {
+  position: relative;
+}
+
+.description-cell::after {
+  content: attr(data-description);
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.description-cell:hover::after {
+  opacity: 1;
+}
+
 </style>
 	<body>
 		<table>
@@ -161,9 +185,9 @@
   <tbody>
     <tr>
 <td class="stier">S</td>
- <td><font color="#ffc85e"><b>★ ★</b></font><br/>Chelvin</td>
- <td><font color="#ffc85e"><b>★ ★ ★</b></font><br/>Twice<br/><small><small>(aka Mimikkyu)</small></small></td>
- <td><font color="#ffc85e"><b>★ ★</b></font><br/>Qopen</td>
+ <td class="description-cell"><font color="#ffc85e"><b>★ ★</b></font><br/>Chelvin</td>
+ <td class="description-cell"><font color="#ffc85e"><b>★ ★ ★</b></font><br/>Twice<br/><small><small>(aka Mimikkyu)</small></small></td>
+ <td class="description-cell"><font color="#ffc85e"><b>★ ★</b></font><br/>Qopen</td>
  <td><font color="#ffc85e"><b>★ ★ ★</b></font> <font color="#fe7f9c"><b>❤</b></font><br/>NightNight</td>
  <td><font color="#ffc85e"><b>★ ★ ★</b></font> <font color="#fe7f9c"><b>❤</b></font><br/>athleticBird</td>
  <td><font color="#ffc85e"><b>★ ★</b></font><br/>zero</td>
@@ -202,10 +226,10 @@
 	  <td><font color="#ffc85e"><b>★</b></font><br/>Aestro</td>
 	  <td><font color="#ffc85e"><b>★</b></font><br/>AimlessLFT<br/><small><small><small>(aka Aumnescio)</small></small></small></td>
 	  <td><font color="#ffc85e"><b>★ ★</b></font><br/>BoJack</td>
-	  <td><font color="#ffc85e"><b>★</b></font><br/>Novayne</td>
 	  <td><font color="#ffc85e"><b>★ ★</b></font><br/>Sobb</td>
-	  <td><font color="#ffc85e"><b>★</b></font><br/>Blademaster</td>
 	  <td><font color="#ffc85e"><b>★</b></font><br/>Jared</td>
+	  <td><font color="#ffc85e"><b>★</b></font><br/>Novayne</td>
+	  <td><font color="#ffc85e"><b>★</b></font><br/>Blademaster</td>
 	  <td><font color="#ffc85e"><b>★</b></font> <font color="#ac36ff"><b>☢</b></font> <font color="#b43327"><b>☠</b></font><br/>SoldierBoy</br><small><small>(aka yakuza)</small></small></td>
 	  <td><font color="#ffc85e"><b>★</b></font><br/>HZRay</td>
 	  <td><font color="#ffc85e"><b>★</b></font><br/>WillyV2</td>
@@ -328,6 +352,7 @@
 	<tr>
 	  <td><font color="#ac36ff"><b>☢☢</b></font><br/>phish</td>
 	  <td><font color="#b43327"><b>☠</b></font><br/>Victoria</td>
+	  <td><font color="#b43327"><b>☠</b></font><br/>chochichasti</td>
 	  <td><font color="#b43327"><b>☠</b></font><br/>Kzyy</td>
 	  <td><font color="#b43327"><b>☠</b></font><br/>Argorazor161</td>
 	  <td><font color="#b43327"><b>☠</b></font><br/>MO18</td>
@@ -374,5 +399,6 @@
 <h1><i>“It's better to keep your mouth shut and appear stupid than open it and remove all doubt”</h1>
 <h2>― Mark Twain</i></h2>
 </div>
-		</body>
+
+</body>
 </html>
