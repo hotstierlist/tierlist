@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HOTS EU Player List Explained</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.9.2/css/flag-icons.min.css" />
+	<link rel="stylesheet" href="styles.css">
+<style>
+ body {
+  background-color: #14121d;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: #efefef;
+ }
+  table {
+    border-collapse: collapse;
+	border-color: black;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+	/* table-layout: fixed; */
+	width: 100%;
+    text-shadow: 2px 2px 4px #000;
+    border-collapse: collapse;
+}
+  
+  th, td {
+    border: 1px solid #000;
+    padding: 2px;
+    text-align: center;
+    text-shadow: 0px 1px 2px #000000;
+	color: #fff;
+	font-size: 13px;
+	font-weight: bold;
+	height: 40px; /* set a fixed height for each table cell */
+	width: 50px; /* set a fixed height for each table cell */
+    border: 1px solid #1e1e1e;
+    padding: 10px;
+    white-space: pre-wrap;
+    overflow: clip; /* Clips text that overflows the cell */
+  }
+
+  th {
+    background-color: #14121d;
+    color: #fff;
+  }
+  tr:nth-child(even) {
+    background-color: #1c182c;
+	padding: 0px;
+  }
+
+  tr:hover {
+    background-color: #211835;
+  }
+  
+  td.stier {
+    background-color: #f65554;
+    text-shadow: 2px 2px 0px #b71513;
+    font-size: 25px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.atier {
+    background-color: #fea366;
+	text-shadow: 2px 2px 0px #f26100;
+    font-size: 25px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.btier {
+    background-color: #fff472;
+	text-shadow: 2px 2px 0px #e4d307;
+    font-size: 24px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.ctier {
+  	text-shadow: 2px 2px 0px #288c28;
+    background-color: #6ffa6f;
+    font-size: 24px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.dtier {
+  	text-shadow: 2px 2px 0px #1150b8;
+    background-color: #66b0fa;
+    font-size: 24px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.ftier {
+  	text-shadow: 2px 2px 0px #6416e0;
+    background-color: #9756ff;
+    font-size: 24px;
+    font-weight: bold;
+	color: #fff;
+}
+  td.fmtier {
+  	text-shadow: 2px 2px 0px #8751f1;
+    background-color: #d056ff;
+    font-size: 24px;
+    font-weight: bold;
+	color: #fff;
+}
+
+	.info-box {
+		width: 80%;
+	}
+	@media (max-width: 576px) {
+		.info-box {
+			width: 100%;
+		}
+	}
+
+	table.info-box {
+	text-align: left;
+	width: 100%;
+	
+}
+    td.legend{
+	 margin: auto;
+    text-align: left;
+    text-shadow: 0px 0px 2px #000000;
+	color: #fff;
+	font-size: 13px;
+	font-weight: normal;
+	height: 2px; /* set a fixed height for each table cell */
+	width: 100%; /* set a fixed height for each table cell */
+    border-top: none;
+	border-left: none;
+	border-right: none;
+    border-bottom: none;
+    padding: 3px;
+  }
+    .legend tr:nth-child(even) {
+    background-color: #14121d;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+    border-bottom: none;
+	padding: 0px;
+	  height: 30px;
+  }
+    .legend th {
+    background-color: #14121d;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+    border-bottom: none;
+	padding: 0px;
+	height: 8px;
+  }
+
+  .legend tr:hover {
+    background-color: #14121d;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+    border-bottom: none;
+  }
+
+.description-cell {
+  position: relative;
+}
+
+.description-cell::after {
+  content: attr(data-description);
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+  background-color: #14121d;
+  color: #14121d;
+  padding: 5px;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.description-cell:hover::after {
+  opacity: 1;
+}
+
+.tippy-content p {
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+.fw-bold {
+	font-weight: bold;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.m-0 {
+	margin: 0px !important;
+}
+
+.mb-1 {
+	margin-bottom: 0.25rem !important;
+}
+
+.rounded-1 {
+    border-radius: 3px !important;
+
+}
+
+</style>
+</head>
+<body>
+<div align="center">	<img align="center" src="title.png"><br>
+<h2>Select List</h2></div>
+    <div class="image-container">
+        <a href="1.html">
+            <img src="category1.png" width="450" alt="Objective Tierlist">
+        </a>  
+		        <a href="2.html">
+            <img src="category2.png" width="450" alt="Subjective Tierlist">
+        </a>
+    </div>
+<div style="padding: 10px; margin: 20px" align="left">
+<h1><i>Questions & Answers</i></h1>
+<h3><i>Let's address some of the most frequent questions / misconceptions / concerns that have been raised:</i></h3>
+<h3><i>"How did the tier list come about?"</i></h3>
+<ul>Sometime in 2022 Gladius and BPRaiku made a tierlist, consisting of and rating people they play with. Of course, as expected from such buffoons all their friends with whom they were 5-stacking with were put in S tier, and people who joined them only on occassionally, they badmouthed 24/7, ridiculed, criticized for their hero choice, even downright bullied were among the bottom places (including me). That was of course totally nonsensical and at best amusing, but I asked myself if it would be at all possible to create a "tierlist" that would be accurate and impartial and be fair for everyone involved, one that doesn't treat friends specially and isn't too harsh on non-friends, due to personal bias. And that's how the idea started, if a completely impartial one could be created, based on factual data, evidence, things that all observers can agree on. The first iteration felt very biased and it just put people based on winrate together, (still fair, but far from ideal), but in the later part of 2023 I paid/hired/recruited a successful friend of mine who is an expert in web development and AI to help take it to the next level. He knew nothing about Heroes of the Storm, and I did need someone who can be entirely objective and impartial. So we ideated together to make use of stats that are already available to us (HeroesProfile being the main one) and make a fully impartial ranking system. And so was born the current version of the Heroes of the Storm EU playerlist, covering mostly QM/ARAM, but some SL as well, where proof is available.<br>
+As of July 10, 2024 it was separated into two different parts - One Objective/Stat-Based (the original idea) and One Subjective(my own experiences with said players)</ul>
+<h3><i>"Isn't it like a Burn Book?"</i></h3>
+<ul>I saw the comment somewhere that it was like a burn book. My understanding of a "Burn Book" comes from Mean Girls, supposed to be this shady, private thing shared among a very select group of people, throwing shade and gossiping behind other people's backs. Basically everything I stand against! So, no, it isn't. This was publicly accessed from Day 1 and was never hidden from anyone. Secondly, I didn't do anything to put anyone in there. They did. You did. With your words and actions. With your behaviour ingame. And yes, showcasing your abilities, but first and foremost is "are you a nice person?". You have to remember that this "list" only aims to provide 1 thing - to make YOU, the community, choose your potential best-suited teammates in the future, know what they've done and how they behave. To know in advance if you should even consider playing together. To give them the benefit of the doubt or not. To be extra careful. So no, I did not put you in the tierlist. You did. As far as I'm concerned everyone starts at bottom of A-Tier (Excellent)(maybe I'm a fool to be this positive about people). Going up or down from there is totally up to them. </ul>
+<h3><i>"I Don't Like or Agree with your Tierlist. Now what?"</i></h3>
+<ul>Everytime someone has disagreed with the tierlist since I chuckle a bit. Because I am reminded of the following meme:<br/>
+<img src="guyoninternet.jpg" width="400"><br/>
+Of course, this is by no means a scientific, peer-reviewed paper, but you cannot ignore the YEARS of accumulated data. And I mean YEARS. Numbers don't lie, people. Stats don't lie. I've been into servers and database work and I love my statistics, I love my excel sheets and I love stats and numbers and making positive use of them. I've put in a lot of work and research into this, and trust me, I would love to get all the time spent on it back, but if I'm doing something, I want to do it right. I want to do it properly, accurately. The idea is to present the facts and everyone else can do whatever they feel like with that information. So if you disagree with any content here on the objective tierlist, then you simply disagree with your own record/stats and displayed behavior. I'm never going to spend a single second trying to convince flat-earthers otherwise. And if you disagree with the SUBJECTIVE version of the tierlist, well then you simply don't believe in free speech. Let me remind everyone that this entire page is in SERVICE to THE COMMUNITY. </ul>
+
+<h3><i>How objective do you believe your criteria and rankings are? How did you ensure that your personal biases did not overly influence the rankings?</i></h3>
+<ul><p>Now that's the best question I was asked about this tierlist and I'm happy to answer it. As previously mentioned, I hired an EXPERT in AI who also has a little of semi-pro gaming background and understands terms like KDR, KDA, APM and the likes as well as MMR distribution. But no matter how much objective data we crammed into it (the first version only had signature heroes, now there are all sorts of stats) everyone seems to always go "but it's just your opinion". The idea was to remove my own opinion and be a 3rd party observer on things that everyone can agree on. Things that actually happened. Things that can be verified, regardless whether or not you like or dislike a person in there.</p>
+<p>I just want to give one example of things I did to fight my own bias. Before the AI ranking came, I did a social experiment: I placed people that are higher than they should be lower. And I placed two certain individuals that were just mediocre and told them they're S tier. What I found was that both parties were HAPPY about it. Of course, why wouldn't the C- tier noob be shown that they're in S-tier or top of A-tier. And why would the humble, nice person who's way better than what I've just shown them be any mad about it?</p></ul>
+
+<h3><i>Me or a friend of mine appear in the tierlist, but we only troll QM/ARAM so those stats aren't an accurate representation</i></h3>
+<ul>It is perfectly reasonable to ask this. A significant chunk of players do not play to excel in stats and I have plenty of friends that will int (die for no reason) just for the fun of it. Good news for those people - if your Ranked stats are better than your QM/ARAM stats, especially when Solo Queue, then your QM/ARAM stats won't matter. This is essentially a "get out of jail free card" to more advanced players who seek a more competitive experience such as Scrims, Customs, grinding the StormLeague Ladder, Ravencourt and even tournaments, they often do not care about their stats in Casual modes and that's absolutely fine, they don't have anything to worry about, they're still accurately represented.</ul>
+
+<h3><i>Some players play only in 5 stacks so their stats are artificially inflated statistics compared to others. Doesn't this lead to a misleading representation of player statistics?</i></h3>
+<ul>That's why the vast, vast majority of stats are taken from SOLO games, Storm/Hero League games. Duo(2-stack), and very rarely Trio(3-stack) are used as a measuring stick, as comparison. If a person does not have enough solo and duo games and they only 5 stack, then their skill level will appear as Not Available. Winrate also does not matter for determining Skill, as long as you're above 50%. So you could be a 5-stacker with 97% winrate and still place lower than a solo player with 53% Winrate. If not anything else, the objective tierlist aims to be completely fair.</ul>
+
+<h3><i>Have you considered how the tier list might be perceived by your friends?</i></h3>
+<ul>I apply the scientific method in everything I do. I put feelings to the side and seek the truth. Question everything, demand data and proof. If there's no proof, dismiss and move on to the next thing. I'm not a snowflake and I'm happy to be proven wrong, it means I've learned something. With all the respect towards my friends and anyone that knows me, I believe that truth comes first, or at least before personal feelings. If someone isn't happy about their placement, they should simply look inward. As I mentioned above, as far as I'm concerned, for me everyone starts at the base of A-Tier and move up or down according to their own actions. And let me be clear that this does not at all make me respect my friends less. Quite on the contrary, it has made me value them more. I don't have "ghost" friends and I try to keep in touch with all my friends. Quality &gt; Quantity.</ul>
+
+<h3><i>What are you hoping to achieve with the tierlist and what future does it have?</i></h3>
+<ul>If something like this had existed when I decided to give HotS a go in 2020–2021, it would’ve saved me a lot of trouble—wasted time, unnecessary drama, and even a couple online friendships. I had to learn the hard way that not everyone in HotS community has good intentions. Some are quite selfish and vindictive. There were times I was warned about certain people, but without proof, I gave them the benefit of the doubt. That often backfired. And the reality is: people will always find reasons to hate, no matter how neutral you try to be.
+With this project, all I’ve ever tried to do is provide clarity, transparency, and truth—based on evidence, consistency, and real behavior. It’s not about favoritism or grudges. It’s about giving others the context I wish I had.
+As for the future of the list—I believe it’s complete. The work is done. At this point, I expect minimal updates, if any. The goal was never to make this a forever project, just a useful one.</ul>
+
+<h3><i>Did you compare your rankings to any other forms of relationship assessment or feedback?</i></h3>
+<ul>Yes, but the only available tools are HeroesProfile (And HeroesProfile is far from perfect) and ingame account stats, so I'm extremely limited, although I think we've already done a new "mini MMR", way more accurate than HeroesProfile's or the now defunct Hotslogs. Basically what we do is tell the AI which stats are good and which are bad and we let it run its course.</ul>
+
+<h3><i>Don't you feel bad exposing people?</i></h3>
+<ul>It’s interesting how no one questions the countless positive or complimentary comments—only the few critical ones draw attention. When someone receives praise or a good ranking, it’s often ignored or dismissed. But as soon as something negative (that actually happened) is being shared/revealed, suddenly it's controversial or “too far.”
+Let’s be clear—I don’t expose, doxx, manipulate, or harass anyone. I document what actually happens: things said or done in-game, in Discord, or in public chats—events others have witnessed, screenshots I’ve saved, and patterns anyone paying attention could recognize. I don’t invent narratives—I observe and reflect them.
+And if someone really believes placements are meaningless, then why get upset? If someone placed me in F-tier on their list, I wouldn’t care. Why? Because I know who I am and what I’m capable of. The irony is, the loudest complaints come from those who are unhappy with their own placement—yet those same people often add the top-ranked players to ask: “Yo, how did you get rated so highly?” The answer? “Nothing. I just played the game.”
+People place themselves on the list through their own behavior. What we do here is simply observe, take notes, and present what’s already out there, quite easy to verify.</p></ul>
+
+<h3><i>How have the relationships with the people in different tiers evolved?</i></h3>
+<ul>I'll repeat, I'm all about quality over quantity. I believe that everyone can change and improve their ranking and their socials. I believe good communication can solve any problem. We were all dumb at some point, I'm dumb about a great many things now that in the future I'll understand better and that's what makes us human. So yes, I believe there are only two or three people in that entire tierlist that are absolutely beyond reach and do not have any redeemable qualities. Everyone else can impress(or disappoint), but as far as playing with people from different tiers of the Objective tierlist - it doesn't affect me, simply because I still try to be the best, most consistent teammate I can be for my teammates regardless of who I play with. </ul>
+
+<h3><i>Do you regret making the Tierlist?</i></h3>
+<ul>I’ve had moments of doubt—mostly early on, before I split the list into objective and subjective sections. The initial version, while still being refined, was blown completely out of proportion by people who were either misinformed or just looking for something to be angry about. No matter how much you try to clarify your intentions or improve the format, some individuals will never be satisfied—they’ll always want more, and often for entirely self-serving reasons.
+The goal was never to insult or attack. It was to offer a transparent, fact-based resource to help YOU—the community—make better decisions about potential teammates. You’re likely to run into many of these players in your own matches, and the list was meant to give you insight based on patterns, behavior and performance—not petty drama.
+In the end, it was created to help others avoid the same missteps I made. To highlight who’s consistently helpful, who drags teams down, and who you might want to think twice about queuing with. It’s not perfect—but the intention has always been to improve the experience for people who just want to enjoy the game (whether casual or competitive) in peace, void of any drama.</ul>
+
+<h3><i>Are you being too harsh on people you have personal distaste for?</i></h3>
+<ul>No. When the AI-based rankings were first introduced, I welcomed them with an open mind. In fact, I was surprised to see a few players I had previously underestimated score higher than expected. Likewise, some I thought were strong turned out to be statistically underwhelming—and that’s perfectly fine. Data can challenge our assumptions, and I respect that. I'm more than happy to change my views if better evidence comes.
+As for the individual “social descriptions,” those are based on real interactions and observable behavior. Whether someone sees them as harsh or not is subjective—it’s not about personal feelings, it’s about what actually happened. Calling it “harsh” is often just a distraction from the truth. Interestingly, many of the top-ranked players have been asked, “What did you do to get placed so high?” And their answer is always the same: “Nothing.” Because that’s the secret—don’t troll, don’t grief, don’t act like an ass. Just be a decent human being. That alone puts you ahead of a surprising number of people.</ul>
+</div>
+
+
+<div align="center">
+<h1><i>“Manipulation is when they blame you for reacting to their toxic behavior, but not addressing their actions that undermined, diminished & disrespected you in the first place.”</h1>
+</div>
+<link rel="stylesheet" href="https://hotstierlist.github.io/tierlist/translucent.css"/>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script>
+tippy('.tooltip', {
+	allowHTML: true,
+	hideOnClick: false,
+	theme: 'translucent',
+	placement: 'auto',	
+	duration: 150,
+});
+</script>
+</body>
+</html>
