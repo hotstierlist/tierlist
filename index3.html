@@ -9,12 +9,30 @@
   <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-tsparticles@2.10.1/dist/react-tsparticles.umd.min.js"></script>
+  
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.9.2/css/flag-icons.min.css" />
+  
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: sans-serif; }
-    #root { height: 100vh; display: flex; flex-direction: column; }
-    .bg-gray-850 { background-color: #1e1e2f; }
-    input, select { outline: none; }
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      height: 100%; 
+      background: #000; 
+      color: #fff; 
+      font-family: sans-serif; 
+    }
+    #root { 
+      height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+    }
+    .bg-gray-850 { 
+      background-color: #1e1e2f; 
+    }
+    input { 
+      outline: none; 
+    }
   </style>
 </head>
 <body>
@@ -23,70 +41,87 @@
     const { useState } = React;
     const { motion } = window['framer-motion'];
     const ParticlesComponent = window['ReactTSParticles'].Particles;
-
+    
+    // --- Player Data ---
     const players = [
-      { name: "PlayerOne", rank: 1, role: "Assassin", stats: "KDA: 5.2 | Damage: High | Mobility: High" },
-      { name: "PlayerTwo", rank: 2, role: "Mage", stats: "KDA: 4.7 | Burst: High | Utility: Medium" },
-      { name: "PlayerThree", rank: 3, role: "Tank", stats: "KDA: 3.1 | Defense: Very High | CC: High" },
+      { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Damage: High | Mobility: High", flag: "fi fi-us" },
+      { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium", flag: "fi fi-gb" },
+      { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Defense: Very High | CC: High", flag: "fi fi-fr" },
+      { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Damage: Medium | Speed: High", flag: "fi fi-de" },
+      { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent", flag: "fi fi-jp" },
+      { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Damage: High | Defense: Medium", flag: "fi fi-ca" }
     ];
-
+    
+    // --- React App Component ---
     function App() {
       const [expandedIndex, setExpandedIndex] = useState(null);
       const [search, setSearch] = useState("");
-      const [roleFilter, setRoleFilter] = useState("all");
-
+      
       const filteredPlayers = players.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-                              p.role.toLowerCase().includes(search.toLowerCase()) ||
-                              p.stats.toLowerCase().includes(search.toLowerCase());
-        const matchesRole = roleFilter === 'all' || p.role === roleFilter;
-        return matchesSearch && matchesRole;
+        return p.name.toLowerCase().includes(search.toLowerCase()) ||
+               p.stats.toLowerCase().includes(search.toLowerCase());
       });
-
+      
+      // The main layout and logic rendered using React.createElement
       return React.createElement('div', { className: 'relative flex-1 flex flex-col items-center p-6 gap-6 overflow-hidden' },
+        
+        // Background Particles
         React.createElement(ParticlesComponent, { className: 'absolute inset-0 -z-10', options: {
           background: { color: '#000000' },
           fullScreen: { enable: true, zIndex: -1 },
-          particles: {
-            number: { value: 80 },
-            size: { value: 2 },
-            color: { value: ['#6bb4ff', '#9d7bff', '#4dd0e1'] },
-            opacity: { value: 0.4 },
-            move: { speed: 0.6 },
-            links: { enable: true, color: '#6bb4ff', opacity: 0.2 }
-          }
+          particles: { number: { value: 80 }, size: { value: 2 }, color: { value: ['#6bb4ff', '#9d7bff', '#4dd0e1'] }, opacity: { value: 0.4 }, move: { speed: 0.6 }, links: { enable: true, color: '#6bb4ff', opacity: 0.2 } }
         } }),
-
+        
+        // Search Input Container
         React.createElement('div', { className: 'w-full max-w-3xl flex flex-col sm:flex-row gap-4' },
-          React.createElement('input', { placeholder: 'Search players...', value: search, onInput: e => setSearch(e.target.value), className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2 flex-1' }),
-          React.createElement('select', { value: roleFilter, onChange: e => setRoleFilter(e.target.value), className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2' },
-            React.createElement('option', { value: 'all' }, 'All Roles'),
-            React.createElement('option', { value: 'Assassin' }, 'Assassin'),
-            React.createElement('option', { value: 'Mage' }, 'Mage'),
-            React.createElement('option', { value: 'Tank' }, 'Tank')
-          )
+          React.createElement('input', { 
+            placeholder: 'Search players (name or stats)...', 
+            value: search, 
+            onInput: e => setSearch(e.target.value), 
+            className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2 flex-1 focus:border-blue-500 transition-colors' 
+          })
         ),
-
+        
+        // Player List Container
         React.createElement('div', { className: 'w-full max-w-3xl space-y-4 mt-4 overflow-auto flex-1' },
-          filteredPlayers.map((player, index) => React.createElement(motion.div, { key: index, initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.2 } },
-            React.createElement('div', { onClick: () => setExpandedIndex(expandedIndex === index ? null : index), className: 'p-4 cursor-pointer rounded-2xl bg-gray-850 border border-gray-700 shadow-xl transition-all hover:shadow-[0_0_20px_rgba(100,150,255,0.6)] hover:border-blue-400' },
+          filteredPlayers.map((player, index) => React.createElement(motion.div, { 
+            key: index, 
+            initial: { opacity: 0, y: 10 }, 
+            animate: { opacity: 1, y: 0 }, 
+            transition: { duration: 0.2, delay: index * 0.05 } 
+          },
+            // Player Card
+            React.createElement('div', { 
+              onClick: () => setExpandedIndex(expandedIndex === index ? null : index), 
+              className: 'p-4 cursor-pointer rounded-2xl bg-gray-850 border border-gray-700 shadow-xl transition-all hover:shadow-[0_0_20px_rgba(100,150,255,0.6)] hover:border-blue-400' 
+            },
+              // Card Header (Rank, Name, Flag)
               React.createElement('div', { className: 'flex items-center justify-between text-lg font-semibold' },
                 React.createElement('div', { className: 'flex items-center gap-4' },
                   React.createElement('span', { className: 'text-blue-300' }, `#${player.rank}`),
-                  React.createElement('span', { className: 'text-gray-100' }, player.name)
-                ),
-                React.createElement('span', { className: 'text-gray-400 text-sm' }, player.role)
+                  React.createElement('span', { className: 'text-gray-100' }, player.name),
+                  React.createElement('span', { className: `${player.flag} w-6 h-4 border border-gray-600 rounded shadow-md` })
+                )
               ),
-              expandedIndex === index && React.createElement('div', { className: 'mt-3 px-4 pb-4 text-gray-300' },
-                React.createElement('p', { className: 'font-medium text-gray-100' }, 'Details:'),
-                React.createElement('p', { className: 'text-sm mt-1 text-blue-200' }, player.stats)
+              // Card Details (Expanded Stats)
+              expandedIndex === index && React.createElement(motion.div, { 
+                initial: { height: 0, opacity: 0 }, 
+                animate: { height: 'auto', opacity: 1 }, 
+                exit: { height: 0, opacity: 0 }, 
+                transition: { duration: 0.3 } 
+              },
+                React.createElement('div', { className: 'mt-3 pt-3 border-t border-gray-700 px-4 text-gray-300' },
+                  React.createElement('p', { className: 'font-medium text-gray-100' }, 'Performance Details:'),
+                  React.createElement('p', { className: 'text-sm mt-1 text-blue-200' }, player.stats)
+                )
               )
             )
           ))
         )
       );
     }
-
+    
+    // Render the App
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(React.createElement(App));
   </script>
