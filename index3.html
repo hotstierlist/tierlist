@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Player List</title>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-tsparticles@2.10.1/dist/react-tsparticles.umd.min.js"></script>
@@ -13,12 +13,13 @@
   <style>
     body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
     .bg-gray-850 { background-color: #1e1e2f; }
+    input, select { outline: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/javascript">
-    const { useState, useEffect } = React;
+    const { useState } = React;
     const { motion } = window['framer-motion'];
     const ParticlesComponent = window['ReactTSParticles'].Particles;
 
@@ -41,10 +42,9 @@
         return matchesSearch && matchesRole;
       });
 
-      return React.createElement('div', { className: 'relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black flex flex-col items-center p-6 gap-6 overflow-hidden' },
-        React.createElement(ParticlesComponent, { className: 'absolute inset-0 -z-10', options: { background: { color: '#00000000' }, fullScreen: { enable: false }, particles: { number: { value: 80 }, size: { value: 2 }, color: { value: ['#6bb4ff', '#9d7bff', '#4dd0e1'] }, opacity: { value: 0.4 }, move: { speed: 0.6 }, links: { enable: true, color: '#6bb4ff', opacity: 0.2 } } } }),
+      return React.createElement('div', { className: 'relative min-h-screen bg-gray-900 flex flex-col items-center p-6 gap-6 overflow-hidden' },
+        React.createElement(ParticlesComponent, { className: 'absolute inset-0 -z-10', options: { background: { color: '#000000' }, fullScreen: { enable: true }, particles: { number: { value: 80 }, size: { value: 2 }, color: { value: ['#6bb4ff', '#9d7bff', '#4dd0e1'] }, opacity: { value: 0.4 }, move: { speed: 0.6 }, links: { enable: true, color: '#6bb4ff', opacity: 0.2 } } } }),
 
-        // Header
         React.createElement('div', { className: 'w-full max-w-3xl flex flex-col sm:flex-row gap-4' },
           React.createElement('input', { placeholder: 'Search players...', value: search, onInput: e => setSearch(e.target.value), className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2 flex-1' }),
           React.createElement('select', { value: roleFilter, onChange: e => setRoleFilter(e.target.value), className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2' },
@@ -55,7 +55,6 @@
           )
         ),
 
-        // Player List
         React.createElement('div', { className: 'w-full max-w-3xl space-y-4 mt-4' },
           filteredPlayers.map((player, index) => React.createElement(motion.div, { key: index, initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.2 } },
             React.createElement('div', { onClick: () => setExpandedIndex(expandedIndex === index ? null : index), className: 'p-4 cursor-pointer rounded-2xl bg-gray-850 border border-gray-700 shadow-xl transition-all hover:shadow-[0_0_20px_rgba(100,150,255,0.6)] hover:border-blue-400' },
