@@ -43,7 +43,9 @@
     const { useState } = React;
     // FIX APPLIED HERE: Added null check for safer destructuring
     const { motion } = window.FramerMotion || { motion: { div: React.Fragment } }; 
-    const ParticlesComponent = window['ReactTSParticles'].Particles;
+// NEW LINE (Guarded access with a fallback):
+// If the library is missing, ParticlesComponent is set to a dummy React component (React.Fragment)
+const ParticlesComponent = window['ReactTSParticles'] ? window['ReactTSParticles'].Particles : React.Fragment;
     
     const players = [
       { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Damage: High | Mobility: High", flag: "fi fi-us" },
