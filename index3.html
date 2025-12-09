@@ -1,0 +1,147 @@
+import { useState, useCallback } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import Particles from "react-tsparticles";
+import { loadParallaxMover } from "tsparticles-move-parallax";
+import { loadFull } from "tsparticles";
+
+const players = [
+  { name: "PlayerOne", rank: 1, role: "Assassin", stats: "KDA: 5.2 | Damage: High | Mobility: High" },
+  { name: "PlayerTwo", rank: 2, role: "Mage", stats: "KDA: 4.7 | Burst: High | Utility: Medium" },
+  { name: "PlayerThree", rank: 3, role: "Tank", stats: "KDA: 3.1 | Defense: Very High | CC: High" },
+];
+
+export default function PlayerList() {
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const filteredPlayers = players.filter((p) => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.role.toLowerCase().includes(search.toLowerCase()) ||
+      p.stats.toLowerCase().includes(search.toLowerCase());
+
+    const matchesRole = roleFilter === "all" || p.role === roleFilter;
+
+    return matchesSearch && matchesRole;
+  });
+  });
+
+  const handleMouseMove = (e) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
+
+  return (
+    <div
+      className="relative min-h-screen bg-gradient-to-b from-gray-900 via-gray-950 to-black text-gray-200 flex flex-col items-center p-6 sm:p-10 gap-6 overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Parallax Stars */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-20"
+        style={{
+          transform: `translate(${mousePos.x * 0.02}px, ${mousePos.y * 0.02}px)`
+        }}
+      >
+        <Particles
+          id="parallaxStars"
+          options={{
+            background: { color: "#00000000" },
+            fullScreen: { enable: false },
+            particles: {
+              number: { value: 80 },
+              size: { value: 1.5 },
+              opacity: { value: 0.5 },
+              move: { speed: 0 },
+              color: { value: "#ffffff" }
+            }
+          }}
+        />
+      </div>
+
+      {/* Nebula Background */}
+      <Particles
+        id="tsparticles"
+        className="absolute inset-0 -z-10"
+        options={{
+          background: { color: "#00000000" },
+          fullScreen: { enable: false },
+          particles: {
+            number: { value: 60 },
+            size: { value: 2 },
+            color: { value: ["#6bb4ff", "#9d7bff", "#4dd0e1"] },
+            opacity: { value: 0.4 },
+            move: { speed: 0.6 },
+            links: { enable: true, color: "#6bb4ff", opacity: 0.2 }
+          }
+        }}
+      />
+
+      {/* Header + Filters */}
+      <div className="w-full max-w-3xl flex flex-col sm:flex-row gap-4">
+        <Input
+          placeholder="Search players..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="bg-gray-800 border-gray-700 text-gray-200 rounded-xl"
+        />
+
+        <Select value={roleFilter} onValueChange={setRoleFilter}>
+          <SelectTrigger className="bg-gray-800 border-gray-700 text-gray-200 rounded-xl">
+            <SelectValue placeholder="Filter by role" />
+          </SelectTrigger>
+          <SelectContent className="bg-gray-900 border-gray-700 text-gray-200">
+            <SelectItem value="all">All Roles</SelectItem>
+            <SelectItem value="Assassin">Assassin</SelectItem>
+            <SelectItem value="Mage">Mage</SelectItem>
+            <SelectItem value="Tank">Tank</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Player List */}
+      <div className="w-full max-w-3xl space-y-4">
+        {filteredPlayers.map((player, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card
+              onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+              className="p-4 cursor-pointer rounded-2xl bg-gray-850 border border-gray-700 shadow-xl transition-all hover:shadow-[0_0_20px_rgba(100,150,255,0.6)] hover:border-blue-400"
+            >
+              <CardContent className="flex items-center justify-between text-lg font-semibold">
+                <div className="flex items-center gap-4">
+                  <span className="text-blue-300">#{player.rank}</span>
+                  <span className="text-gray-100">{player.name}</span>
+                </div>
+                <span className="text-gray-400 text-sm">{player.role}</span>
+              </CardContent>
+
+              <AnimatePresence>
+                {expandedIndex === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="mt-3 px-4 pb-4 text-gray-300"
+                  >
+                    <p className="font-medium text-gray-100">Details:</p>
+                    <p className="text-sm mt-1 text-blue-200">{player.stats}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
