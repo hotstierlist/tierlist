@@ -39,10 +39,10 @@
   <div id="root"></div>
   <script type="text/javascript">
     const { useState } = React;
-    const { motion } = window.FramerMotion;
+    // FIX APPLIED HERE: Changed from window['framer-motion'] to window.FramerMotion
+    const { motion } = window.FramerMotion; 
     const ParticlesComponent = window['ReactTSParticles'].Particles;
     
-    // --- Player Data ---
     const players = [
       { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Damage: High | Mobility: High", flag: "fi fi-us" },
       { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium", flag: "fi fi-gb" },
@@ -52,7 +52,6 @@
       { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Damage: High | Defense: Medium", flag: "fi fi-ca" }
     ];
     
-    // --- React App Component ---
     function App() {
       const [expandedIndex, setExpandedIndex] = useState(null);
       const [search, setSearch] = useState("");
@@ -62,7 +61,6 @@
                p.stats.toLowerCase().includes(search.toLowerCase());
       });
       
-      // The main layout and logic rendered using React.createElement
       return React.createElement('div', { className: 'relative flex-1 flex flex-col items-center p-6 gap-6 overflow-hidden' },
         
         // Background Particles
