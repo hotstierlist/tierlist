@@ -6,7 +6,9 @@
   <title>Player List</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+  
+  <script src="https://unpkg.com/framer-motion@11.0.14/dist/framer-motion.umd.js"></script>
+  
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-tsparticles@2.10.1/dist/react-tsparticles.umd.min.js"></script>
   
@@ -39,8 +41,8 @@
   <div id="root"></div>
   <script type="text/javascript">
     const { useState } = React;
-    // FIX APPLIED HERE: Changed from window['framer-motion'] to window.FramerMotion
-    const { motion } = window.FramerMotion; 
+    // FIX APPLIED HERE: Added null check for safer destructuring
+    const { motion } = window.FramerMotion || { motion: { div: React.Fragment } }; 
     const ParticlesComponent = window['ReactTSParticles'].Particles;
     
     const players = [
@@ -60,6 +62,8 @@
         return p.name.toLowerCase().includes(search.toLowerCase()) ||
                p.stats.toLowerCase().includes(search.toLowerCase());
       });
+      
+      const MotionDiv = motion.div || 'div'; // Use 'div' as a fallback if motion.div is undefined
       
       return React.createElement('div', { className: 'relative flex-1 flex flex-col items-center p-6 gap-6 overflow-hidden' },
         
@@ -82,7 +86,7 @@
         
         // Player List Container
         React.createElement('div', { className: 'w-full max-w-3xl space-y-4 mt-4 overflow-auto flex-1' },
-          filteredPlayers.map((player, index) => React.createElement(motion.div, { 
+          filteredPlayers.map((player, index) => React.createElement(MotionDiv, { 
             key: index, 
             initial: { opacity: 0, y: 10 }, 
             animate: { opacity: 1, y: 0 }, 
@@ -102,7 +106,7 @@
                 )
               ),
               // Card Details (Expanded Stats)
-              expandedIndex === index && React.createElement(motion.div, { 
+              expandedIndex === index && React.createElement(MotionDiv, { 
                 initial: { height: 0, opacity: 0 }, 
                 animate: { height: 'auto', opacity: 1 }, 
                 exit: { height: 0, opacity: 0 }, 
