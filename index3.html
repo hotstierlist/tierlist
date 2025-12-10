@@ -3,131 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Player List</title>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <script src="https://unpkg.com/framer-motion@11.0.14/dist/framer-motion.umd.js"></script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-tsparticles@2.10.1/dist/react-tsparticles.umd.min.js"></script>
-  
+  <title>Player List (Professional Tooltips)</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.9.2/css/flag-icons.min.css" />
-  
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
   <style>
-    html, body { 
-      margin: 0; 
-      padding: 0; 
-      height: 100%; 
-      background: #000; 
-      color: #fff; 
-      font-family: sans-serif; 
-    }
-    #root { 
-      height: 100vh; 
-      display: flex; 
-      flex-direction: column; 
-    }
-    .bg-gray-850 { 
-      background-color: #1e1e2f; 
-    }
-    input { 
-      outline: none; 
-    }
+    body { background: #000; color: #fff; font-family: sans-serif; }
+    .bg-gray-850 { background-color: #1e1e2f; }
+    .tooltip-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease; opacity: 0; transform: translateY(8px); display: flex; gap: 1rem; }
+    .tooltip-content.open { max-height: 500px; opacity: 1; transform: translateY(0); }
+    .player-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid #444; border-radius: 0.75rem; background-color: #1e1e2f; cursor: pointer; transition: all 0.25s ease; }
+    .player-row:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(100,150,255,0.6); }
+    .tooltip-content { width: 100%; background-color: #111827; border: 1px solid #3b82f6; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem; line-height: 1.25rem; }
+    .signature-heroes { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+    .signature-heroes img { width: 48px; height: 48px; border-radius: 0.5rem; object-fit: cover; }
+    .tooltip-left { flex: 0 0 30%; display: flex; flex-direction: column; gap: 0.5rem; }
+    .tooltip-right { flex: 0 0 70%; margin-left: 1rem; }
+    .tooltip-rank { font-weight: bold; color: #3b82f6; margin-right: 0.5rem; }
+    .alternate-ids { color: #827ee9; margin-top: 0.5rem; font-size: 0.875rem; }
+    .recommendation { display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem; font-weight: bold; }
+    .recommendation span { font-size: 1.2rem; }
+    .recommended { color: #22c55e; }
+    .not-recommended { color: #ef4444; }
   </style>
 </head>
-<body>
-  <div id="root"></div>
-  <script type="text/javascript">
-    const { useState } = React;
-    // FIX APPLIED HERE: Added null check for safer destructuring
-    const { motion } = window.FramerMotion || { motion: { div: React.Fragment } }; 
-// NEW LINE (Guarded access with a fallback):
-// If the library is missing, ParticlesComponent is set to a dummy React component (React.Fragment)
-const ParticlesComponent = window['ReactTSParticles'] ? window['ReactTSParticles'].Particles : React.Fragment;
-    
-    const players = [
-      { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Damage: High | Mobility: High", flag: "fi fi-us" },
-      { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium", flag: "fi fi-gb" },
-      { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Defense: Very High | CC: High", flag: "fi fi-fr" },
-      { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Damage: Medium | Speed: High", flag: "fi fi-de" },
-      { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent", flag: "fi fi-jp" },
-      { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Damage: High | Defense: Medium", flag: "fi fi-ca" }
-    ];
-    
-    function App() {
-      const [expandedIndex, setExpandedIndex] = useState(null);
-      const [search, setSearch] = useState("");
-      
-      const filteredPlayers = players.filter(p => {
-        return p.name.toLowerCase().includes(search.toLowerCase()) ||
-               p.stats.toLowerCase().includes(search.toLowerCase());
-      });
-      
-      const MotionDiv = motion.div || 'div'; // Use 'div' as a fallback if motion.div is undefined
-      
-      return React.createElement('div', { className: 'relative flex-1 flex flex-col items-center p-6 gap-6 overflow-hidden' },
-        
-        // Background Particles
-        React.createElement(ParticlesComponent, { className: 'absolute inset-0 -z-10', options: {
-          background: { color: '#000000' },
-          fullScreen: { enable: true, zIndex: -1 },
-          particles: { number: { value: 80 }, size: { value: 2 }, color: { value: ['#6bb4ff', '#9d7bff', '#4dd0e1'] }, opacity: { value: 0.4 }, move: { speed: 0.6 }, links: { enable: true, color: '#6bb4ff', opacity: 0.2 } }
-        } }),
-        
-        // Search Input Container
-        React.createElement('div', { className: 'w-full max-w-3xl flex flex-col sm:flex-row gap-4' },
-          React.createElement('input', { 
-            placeholder: 'Search players (name or stats)...', 
-            value: search, 
-            onInput: e => setSearch(e.target.value), 
-            className: 'bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-2 flex-1 focus:border-blue-500 transition-colors' 
-          })
-        ),
-        
-        // Player List Container
-        React.createElement('div', { className: 'w-full max-w-3xl space-y-4 mt-4 overflow-auto flex-1' },
-          filteredPlayers.map((player, index) => React.createElement(MotionDiv, { 
-            key: index, 
-            initial: { opacity: 0, y: 10 }, 
-            animate: { opacity: 1, y: 0 }, 
-            transition: { duration: 0.2, delay: index * 0.05 } 
-          },
-            // Player Card
-            React.createElement('div', { 
-              onClick: () => setExpandedIndex(expandedIndex === index ? null : index), 
-              className: 'p-4 cursor-pointer rounded-2xl bg-gray-850 border border-gray-700 shadow-xl transition-all hover:shadow-[0_0_20px_rgba(100,150,255,0.6)] hover:border-blue-400' 
-            },
-              // Card Header (Rank, Name, Flag)
-              React.createElement('div', { className: 'flex items-center justify-between text-lg font-semibold' },
-                React.createElement('div', { className: 'flex items-center gap-4' },
-                  React.createElement('span', { className: 'text-blue-300' }, `#${player.rank}`),
-                  React.createElement('span', { className: 'text-gray-100' }, player.name),
-                  React.createElement('span', { className: `${player.flag} w-6 h-4 border border-gray-600 rounded shadow-md` })
-                )
-              ),
-              // Card Details (Expanded Stats)
-              expandedIndex === index && React.createElement(MotionDiv, { 
-                initial: { height: 0, opacity: 0 }, 
-                animate: { height: 'auto', opacity: 1 }, 
-                exit: { height: 0, opacity: 0 }, 
-                transition: { duration: 0.3 } 
-              },
-                React.createElement('div', { className: 'mt-3 pt-3 border-t border-gray-700 px-4 text-gray-300' },
-                  React.createElement('p', { className: 'font-medium text-gray-100' }, 'Performance Details:'),
-                  React.createElement('p', { className: 'text-sm mt-1 text-blue-200' }, player.stats)
-                )
-              )
-            )
-          ))
-        )
-      );
+<body class="p-6">
+  <div id="particles" class="fixed inset-0 -z-10"></div>
+  <div class="w-full max-w-3xl mx-auto flex flex-col items-center gap-8">
+    <!-- Logo Placeholder -->
+    <img src="https://via.placeholder.com/180x80?text=LOGO" alt="Logo" class="mx-auto mb-6 opacity-90 rounded-lg shadow-lg">
+
+    <div class="w-full flex flex-col items-center gap-4">
+    <input id="search" class="w-full bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-3 hover:border-blue-400 focus:border-blue-500 transition-all" placeholder="Search players...">
+    <div id="playerList" class="w-full flex flex-col gap-2"></div>
+  </div>
+<script>
+const players = [
+  { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true },
+  { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false },
+  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true },
+  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true },
+  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false },
+  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true }
+];
+
+const container = document.getElementById("playerList");
+const searchInput = document.getElementById("search");
+
+function renderList(filter = "") {
+  container.innerHTML = "";
+  const filtered = players.filter(p =>
+    p.name.toLowerCase().includes(filter.toLowerCase()) ||
+    p.stats.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  filtered.forEach(player => {
+    const card = document.createElement("div");
+    card.className = "player-row relative";
+
+    const header = document.createElement("div");
+    header.className = "flex items-center gap-3 text-lg font-semibold";
+    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span>${player.name}</span>`;
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip-content mt-2';
+    tooltip.innerHTML = `
+      <div class='tooltip-left'>
+        <div class="font-medium text-gray-100">${player.name} — #${player.rank}</div>
+        <div class="mt-1 text-blue-200">${player.stats}</div>
+        <div class="recommendation ${player.recommended ? 'recommended' : 'not-recommended'}">
+          <span>${player.recommended ? '👍' : '👎'}</span> ${player.recommended ? 'Recommended' : 'Not Recommended'}
+        </div>
+        <div class="mt-2 font-semibold text-gray-200">Signature Heroes:</div>
+        <div class="signature-heroes">
+          <img src="https://via.placeholder.com/48" alt="Hero 1">
+          <img src="https://via.placeholder.com/48" alt="Hero 2">
+          <img src="https://via.placeholder.com/48" alt="Hero 3">
+        </div>
+        <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs}</div>
+      </div>
+      <div class='tooltip-right'>
+        <div class='text-gray-300 text-sm mt-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae sapien eget lorem malesuada facilisis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</div>
+      </div>
+    `;
+
+    card.appendChild(header);
+    card.appendChild(tooltip);
+
+    card.addEventListener('mouseenter', () => { tooltip.classList.add('open'); });
+    card.addEventListener('mouseleave', () => { tooltip.classList.remove('open'); });
+
+    container.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input", e => { renderList(e.target.value); });
+renderList();
+
+(async () => {
+  await tsParticles.load("particles", {
+    particles: {
+      number: { value: 80 },
+      size: { value: 2 },
+      move: { speed: 0.4 },
+      color: { value: ["#6bb4ff", "#9d7bff", "#4dd0e1"] },
+      links: { enable: true, color: "#6bb4ff" }
     }
-    
-    // Render the App
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(React.createElement(App));
-  </script>
+  });
+})();
+</script>
 </body>
 </html>
