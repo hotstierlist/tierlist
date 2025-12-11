@@ -11,24 +11,24 @@
     body { background: #000; color: #fff; font-family: sans-serif; }
     .bg-gray-850 { background-color: #1e1e2f; }
 
-    /* --- CLEAN REWRITE OF TOOLTIP SYSTEM --- */
+    /* --- TOOLTIP SYSTEM --- */
     .tooltip-content {
       position: absolute;
       left: 0;
       top: 100%;
-      z-index: 9999; /* keep tooltip above all rows */
+      z-index: 9999;
       opacity: 0;
-      pointer-events: none; /* avoid affecting layout/scroll */
+      pointer-events: none;
       transform: translateY(6px);
       transition: opacity 0.25s ease, transform 0.25s ease;
-      display: block; /* keep layout stable while hidden */
-      width: max-content; /* prevent pushing layout */
-      min-width: 350px;
-      max-width: 700px;
+      display: block;
+      width: max-content;
+      min-width: 800px; /* increased width */
+      max-width: 1200px;
       background-color: #111827;
       border: 1px solid #3b82f6;
       border-radius: 0.75rem;
-      padding: 0.75rem;
+      padding: 1rem;
       font-size: 0.875rem;
       line-height: 1.25rem;
       gap: 1rem;
@@ -39,61 +39,19 @@
       opacity: 1;
       transform: translateY(0);
       visibility: visible;
-      pointer-events: auto; /* enable interaction */
+      pointer-events: auto;
     }
 
-    /* Layout fix: 25 / 75 split */
-    .tooltip-left {
-      flex: 0 0 25%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+    .tooltip-left { flex: 0 0 25%; display: flex; flex-direction: column; gap: 0.5rem; }
+    .tooltip-right { flex: 0 0 75%; margin-left: 1rem; }
 
-    .tooltip-right {
-      flex: 0 0 75%;
-      margin-left: 1rem;
-    }
+    .player-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid #444; border-radius: 0.75rem; background-color: #1e1e2f; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: visible; z-index: 1; }
+    .player-row:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(100,150,255,0.6); }
 
-    /* Player row */
-    .player-row { z-index: 5000;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.75rem;
-      border: 1px solid #444;
-      border-radius: 0.75rem;
-      background-color: #1e1e2f;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: visible; /* ensure tooltip does not clip */
-      z-index: 1;
-    }
-
-    .player-row:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 0 20px rgba(100,150,255,0.6);
-    }
-
-    /* Signature hero icons */
-    .signature-heroes {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .signature-heroes img {
-      width: 48px;
-      height: 48px;
-      border-radius: 0.5rem;
-      object-fit: cover;
-    }
-
+    .signature-heroes { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+    .signature-heroes img { width: 48px; height: 48px; border-radius: 0.5rem; object-fit: cover; }
     .tooltip-rank { font-weight: bold; color: #3b82f6; margin-right: 0.5rem; }
     .alternate-ids { color: #827ee9; margin-top: 0.5rem; font-size: 0.875rem; }
-
-    /* Recommendation thumbs */
     .recommendation { display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem; font-weight: bold; }
     .recommended { color: #22c55e; }
     .not-recommended { color: #ef4444; }
@@ -102,12 +60,11 @@
 <body class="p-6">
   <div id="particles" class="fixed inset-0 -z-10"></div>
   <div class="w-full max-w-3xl mx-auto flex flex-col items-center gap-8">
-    <!-- Logo Placeholder -->
     <img src="https://via.placeholder.com/180x80?text=LOGO" alt="Logo" class="mx-auto mb-6 opacity-90 rounded-lg shadow-lg">
-
     <div class="w-full flex flex-col items-center gap-4">
-    <input id="search" class="w-full bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-3 hover:border-blue-400 focus:border-blue-500 transition-all" placeholder="Search players...">
-    <div id="playerList" class="w-full flex flex-col gap-2"></div>
+      <input id="search" class="w-full bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-3 hover:border-blue-400 focus:border-blue-500 transition-all" placeholder="Search players...">
+      <div id="playerList" class="w-full flex flex-col gap-2"></div>
+    </div>
   </div>
 <script>
 const players = [
@@ -122,52 +79,32 @@ const players = [
 const container = document.getElementById("playerList");
 const searchInput = document.getElementById("search");
 
-// --- CREATE GLOBAL TOOLTIP ---
 const globalTooltip = document.createElement("div");
 globalTooltip.className = "tooltip-content";
-Object.assign(globalTooltip.style, {
-  position: "fixed",
-  top: "0px",
-  left: "0px",
-  zIndex: 999999999,
-  pointerEvents: "none",
-});
+Object.assign(globalTooltip.style, { position: "fixed", top: "0px", left: "0px", zIndex: 999999999, pointerEvents: "none" });
 document.body.appendChild(globalTooltip);
-
-let activeRow = null;
 
 function showTooltip(content, row) {
   globalTooltip.innerHTML = content;
   globalTooltip.classList.add("open");
   globalTooltip.style.pointerEvents = "auto";
-
   const rect = row.getBoundingClientRect();
   globalTooltip.style.top = rect.bottom + 8 + "px";
   globalTooltip.style.left = rect.left + "px";
 }
 
-function hideTooltip() {
-  globalTooltip.classList.remove("open");
-  globalTooltip.style.pointerEvents = "none";
-}
+function hideTooltip() { globalTooltip.classList.remove("open"); globalTooltip.style.pointerEvents = "none"; }
 
 function renderList(filter = "") {
   container.innerHTML = "";
-  const filtered = players.filter(p =>
-    p.name.toLowerCase().includes(filter.toLowerCase()) ||
-    p.stats.toLowerCase().includes(filter.toLowerCase())
-  );
-
+  const filtered = players.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.stats.toLowerCase().includes(filter.toLowerCase()));
   filtered.forEach(player => {
     const card = document.createElement("div");
     card.className = "player-row relative overflow-visible";
-
     const header = document.createElement("div");
     header.className = "flex items-center gap-3 text-lg font-semibold";
     header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span>${player.name}</span>`;
-
     card.appendChild(header);
-
     const tooltipContent = `
       <div style='display:flex; gap:1rem;'>
         <div class='tooltip-left'>
@@ -189,13 +126,8 @@ function renderList(filter = "") {
         </div>
       </div>
     `;
-
-    card.addEventListener('mouseenter', () => {
-      showTooltip(tooltipContent, card);
-    });
-
+    card.addEventListener('mouseenter', () => showTooltip(tooltipContent, card));
     card.addEventListener('mouseleave', hideTooltip);
-
     container.appendChild(card);
   });
 }
