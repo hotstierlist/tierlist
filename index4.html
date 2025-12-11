@@ -1,19 +1,207 @@
-Your tooltip is now a **true global floating element**, fully detached from the player list.
-This guarantees:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Player List (Professional Tooltips)</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.9.2/css/flag-icons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.min.js"></script>
+  <style>
+    body { background: #000; color: #fff; font-family: sans-serif; }
+    .bg-gray-850 { background-color: #1e1e2f; }
 
-### ✔ Tooltip always appears *on top*
+    /* --- CLEAN REWRITE OF TOOLTIP SYSTEM --- */
+    .tooltip-content {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      z-index: 9999; /* keep tooltip above all rows */
+      opacity: 0;
+      pointer-events: none; /* avoid affecting layout/scroll */
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      display: block; /* keep layout stable while hidden */
+      width: max-content; /* prevent pushing layout */
+      min-width: 350px;
+      max-width: 700px;
+      background-color: #111827;
+      border: 1px solid #3b82f6;
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      gap: 1rem;
+      visibility: hidden;
+    }
 
-### ✔ No clipping, no hiding, no pushing elements
+    .tooltip-content.open {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+      pointer-events: auto; /* enable interaction */
+    }
 
-### ✔ No wobbling
+    /* Layout fix: 25 / 75 split */
+    .tooltip-left {
+      flex: 0 0 25%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-### ✔ Fully stable hover behavior
+    .tooltip-right {
+      flex: 0 0 75%;
+      margin-left: 1rem;
+    }
 
-If you'd like, I can also add:
+    /* Player row */
+    .player-row { z-index: 5000;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #444;
+      border-radius: 0.75rem;
+      background-color: #1e1e2f;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: visible; /* ensure tooltip does not clip */
+      z-index: 1;
+    }
 
-* **Collision detection** (auto-move tooltip above if near bottom of screen)
-* **Smooth fade + slide animations**
-* **Arrow pointer** to the row
-* **Click-to-pin tooltip**
+    .player-row:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(100,150,255,0.6);
+    }
 
-Just tell me!
+    /* Signature hero icons */
+    .signature-heroes {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .signature-heroes img {
+      width: 48px;
+      height: 48px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+    }
+
+    .tooltip-rank { font-weight: bold; color: #3b82f6; margin-right: 0.5rem; }
+    .alternate-ids { color: #827ee9; margin-top: 0.5rem; font-size: 0.875rem; }
+
+    /* Recommendation thumbs */
+    .recommendation { display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem; font-weight: bold; }
+    .recommended { color: #22c55e; }
+    .not-recommended { color: #ef4444; }
+  </style>
+</head>
+<body class="p-6">
+  <div id="particles" class="fixed inset-0 -z-10"></div>
+  <div class="w-full max-w-3xl mx-auto flex flex-col items-center gap-8">
+    <!-- Logo Placeholder -->
+    <img src="https://via.placeholder.com/180x80?text=LOGO" alt="Logo" class="mx-auto mb-6 opacity-90 rounded-lg shadow-lg">
+
+    <div class="w-full flex flex-col items-center gap-4">
+    <input id="search" class="w-full bg-gray-800 border border-gray-700 text-gray-200 rounded-xl p-3 hover:border-blue-400 focus:border-blue-500 transition-all" placeholder="Search players...">
+    <div id="playerList" class="w-full flex flex-col gap-2"></div>
+  </div>
+<script>
+const players = [
+  { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true },
+  { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false },
+  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true },
+  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true },
+  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false },
+  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true }
+];
+
+const container = document.getElementById("playerList");
+const searchInput = document.getElementById("search");
+
+// --- CREATE GLOBAL TOOLTIP ---
+const globalTooltip = document.createElement("div");
+globalTooltip.className = "tooltip-content";
+Object.assign(globalTooltip.style, {
+  position: "fixed",
+  top: "0px",
+  left: "0px",
+  zIndex: 999999999,
+  pointerEvents: "none",
+});
+document.body.appendChild(globalTooltip);
+
+let activeRow = null;
+
+function showTooltip(content, row) {
+  globalTooltip.innerHTML = content;
+  globalTooltip.classList.add("open");
+  globalTooltip.style.pointerEvents = "auto";
+
+  const rect = row.getBoundingClientRect();
+  globalTooltip.style.top = rect.bottom + 8 + "px";
+  globalTooltip.style.left = rect.left + "px";
+}
+
+function hideTooltip() {
+  globalTooltip.classList.remove("open");
+  globalTooltip.style.pointerEvents = "none";
+}
+
+function renderList(filter = "") {
+  container.innerHTML = "";
+  const filtered = players.filter(p =>
+    p.name.toLowerCase().includes(filter.toLowerCase()) ||
+    p.stats.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  filtered.forEach(player => {
+    const card = document.createElement("div");
+    card.className = "player-row relative overflow-visible";
+
+    const header = document.createElement("div");
+    header.className = "flex items-center gap-3 text-lg font-semibold";
+    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span>${player.name}</span>`;
+
+    card.appendChild(header);
+
+    const tooltipContent = `
+      <div style='display:flex; gap:1rem;'>
+        <div class='tooltip-left'>
+          <div class="font-medium text-gray-100">${player.name} — #${player.rank}</div>
+          <div class="mt-1 text-blue-200">${player.stats}</div>
+          <div class="recommendation ${player.recommended ? 'recommended' : 'not-recommended'}">
+            <span>${player.recommended ? '👍' : '👎'}</span> ${player.recommended ? 'Recommended' : 'Not Recommended'}
+          </div>
+          <div class="mt-2 font-semibold text-gray-200">Signature Heroes:</div>
+          <div class="signature-heroes">
+            <img src="https://via.placeholder.com/48">
+            <img src="https://via.placeholder.com/48">
+            <img src="https://via.placeholder.com/48">
+          </div>
+          <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs}</div>
+        </div>
+        <div class='tooltip-right'>
+          <div class='text-gray-300 text-sm mt-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae sapien eget lorem malesuada facilisis.</div>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('mouseenter', () => {
+      showTooltip(tooltipContent, card);
+    });
+
+    card.addEventListener('mouseleave', hideTooltip);
+
+    container.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input", e => { renderList(e.target.value); });
+renderList();
+</script>
+</body>
+</html>
