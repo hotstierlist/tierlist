@@ -68,12 +68,12 @@
   </div>
 <script>
 const players = [
-  { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true },
-  { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false },
-  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true },
-  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true },
-  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false },
-  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true }
+  { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true, lore: "PlayerOne is known for explosive playmaking and unmatched precision in critical teamfights. His style revolves around aggressive map control and confident duels." },
+  { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false, lore: "PlayerTwo excels in macro gameplay and objective rotations, favoring defensive setups that slowly dismantle opponents through consistency." },
+  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true, lore: "PlayerThree is a risk-taker with a reputation for unpredictable flanks and high-impact clutch plays that swing momentum instantly." },
+  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true, lore: "PlayerFour brings unmatched consistency, frequently topping leaderboards with clean mechanics and exceptional positioning." },
+  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false, lore: "PlayerFive is a strategic thinker who focuses on enabling teammates, often sacrificing personal stats for smarter macro decisions." },
+  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true, lore: "PlayerSix blends creativity with discipline, known for adaptive gameplay and flexible talent builds suited to any match scenario." }
 ];
 
 const container = document.getElementById("playerList");
@@ -103,12 +103,12 @@ function renderList(filter = "") {
     card.className = "player-row relative overflow-visible";
     const header = document.createElement("div");
     header.className = "flex items-center gap-3 text-lg font-semibold";
-    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span>${player.name}</span>`;
+    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span class='ml-3'>${player.name}</span>`;
     card.appendChild(header);
     const tooltipContent = `
       <div style='display:flex; gap:1rem;'>
         <div class='tooltip-left'>
-          <div class="font-medium text-gray-100">${player.name} — #${player.rank}</div>
+          <div class="font-medium text-gray-100 flex items-center gap-2"><span class='${player.flag} w-6 h-4'></span> ${player.name} — #${player.rank}</div>
           <div class="mt-1 text-blue-200">${player.stats}</div>
           <div class="recommendation ${player.recommended ? 'recommended' : 'not-recommended'}">
             <span>${player.recommended ? '👍' : '👎'}</span> ${player.recommended ? 'Recommended' : 'Not Recommended'}
@@ -122,7 +122,7 @@ function renderList(filter = "") {
           <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs}</div>
         </div>
         <div class='tooltip-right'>
-          <div class='text-gray-300 text-sm mt-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae sapien eget lorem malesuada facilisis.</div>
+          <div class='text-gray-300 text-sm mt-1'>${player.lore}</div>
         </div>
       </div>
     `;
