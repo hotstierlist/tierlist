@@ -68,12 +68,12 @@
   </div>
 <script>
 const players = [
-  { name: "PlayerOne", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true, lore: "PlayerOne is known for explosive playmaking and unmatched precision in critical teamfights. His style revolves around aggressive map control and confident duels." },
-  { name: "PlayerTwo", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false, lore: "PlayerTwo excels in macro gameplay and objective rotations, favoring defensive setups that slowly dismantle opponents through consistency." },
-  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true, lore: "PlayerThree is a risk-taker with a reputation for unpredictable flanks and high-impact clutch plays that swing momentum instantly." },
-  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true, lore: "PlayerFour brings unmatched consistency, frequently topping leaderboards with clean mechanics and exceptional positioning." },
-  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false, lore: "PlayerFive is a strategic thinker who focuses on enabling teammates, often sacrificing personal stats for smarter macro decisions." },
-  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true, lore: "PlayerSix blends creativity with discipline, known for adaptive gameplay and flexible talent builds suited to any match scenario." }
+  { name: "Blodcool", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true, lore: "An exceptional player, but more importantly, an even more remarkable individual. Friendly, non-judgmental, and overflowing with positivity, athleticBird embodies good vibes and camaraderie without any ego. He consistently helps create incredible moments while gaming, leading to lasting, cherished memories. Engaging with "The Bird" isn’t just about gaming; it’s a delightful experience filled with socializing and lively banter. Truly, the hero the HotS community needs—but does not deserve, not by a long shot.", signatureHeroes: ["https://via.placeholder.com/48?text=P1A","https://via.placeholder.com/48?text=P1B","https://via.placeholder.com/48?text=P1C"] },
+  { name: "athleticBird", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false, lore: "PlayerTwo excels in macro gameplay and objective rotations.", signatureHeroes: ["https://via.placeholder.com/48?text=P2A","https://via.placeholder.com/48?text=P2B","https://via.placeholder.com/48?text=P2C"] },
+  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true, lore: "PlayerThree is a risk-taker with unpredictable flanks.", signatureHeroes: ["https://via.placeholder.com/48?text=P3A","https://via.placeholder.com/48?text=P3B","https://via.placeholder.com/48?text=P3C"] },
+  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true, lore: "PlayerFour brings unmatched consistency.", signatureHeroes: ["https://via.placeholder.com/48?text=P4A","https://via.placeholder.com/48?text=P4B","https://via.placeholder.com/48?text=P4C"] },
+  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false, lore: "PlayerFive is a strategic thinker.", signatureHeroes: ["https://via.placeholder.com/48?text=P5A","https://via.placeholder.com/48?text=P5B","https://via.placeholder.com/48?text=P5C"] },
+  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true, lore: "PlayerSix blends creativity with discipline.", signatureHeroes: ["https://via.placeholder.com/48?text=P6A","https://via.placeholder.com/48?text=P6B","https://via.placeholder.com/48?text=P6C"] }
 ];
 
 const container = document.getElementById("playerList");
@@ -102,22 +102,20 @@ function renderList(filter = "") {
     const card = document.createElement("div");
     card.className = "player-row relative overflow-visible";
     const header = document.createElement("div");
-    header.className = "flex items-center gap-3 text-lg font-semibold";
+    header.className = "flex items-center gap-5 text-lg font-semibold";
     header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span class='ml-3'>${player.name}</span>`;
     card.appendChild(header);
     const tooltipContent = `
       <div style='display:flex; gap:1rem;'>
         <div class='tooltip-left'>
-          <div class="font-medium text-gray-100 flex items-center gap-2"><span class='${player.flag} w-6 h-4'></span> ${player.name} — #${player.rank}</div>
+          <div class="font-medium text-gray-100 flex items-center gap-4"><span class='${player.flag} w-6 h-4'></span> ${player.name} — #${player.rank}</div>
           <div class="mt-1 text-blue-200">${player.stats}</div>
           <div class="recommendation ${player.recommended ? 'recommended' : 'not-recommended'}">
             <span>${player.recommended ? '👍' : '👎'}</span> ${player.recommended ? 'Recommended' : 'Not Recommended'}
           </div>
           <div class="mt-2 font-semibold text-gray-200">Signature Heroes:</div>
           <div class="signature-heroes">
-            <img src="https://via.placeholder.com/48">
-            <img src="https://via.placeholder.com/48">
-            <img src="https://via.placeholder.com/48">
+            ${player.signatureHeroes.map(src => `<img src='${src}'>`).join('')}
           </div>
           <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs}</div>
         </div>
