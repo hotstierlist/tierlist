@@ -68,7 +68,7 @@
   </div>
 <script>
 const players = [
-  { name: "Blodcool", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true, lore: "An exceptional player, but more importantly, an even more remarkable individual. Friendly, non-judgmental, and overflowing with positivity, athleticBird embodies good vibes and camaraderie without any ego. He consistently helps create incredible moments while gaming, leading to lasting, cherished memories. Engaging with "The Bird" isn’t just about gaming; it’s a delightful experience filled with socializing and lively banter. Truly, the hero the HotS community needs—but does not deserve, not by a long shot.", signatureHeroes: ["https://via.placeholder.com/48?text=P1A","https://via.placeholder.com/48?text=P1B","https://via.placeholder.com/48?text=P1C"] },
+  { name: "Blodcool", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-us", alternateIDs: "AltName1, AltName2", recommended: true, lore: "PlayerOne is known for explosive playmaking and unmatched precision in critical teamfights.", signatureHeroes: ["https://via.placeholder.com/48?text=P1A","https://via.placeholder.com/48?text=P1B","https://via.placeholder.com/48?text=P1C"] },
   { name: "athleticBird", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-gb", alternateIDs: "AltName3", recommended: false, lore: "PlayerTwo excels in macro gameplay and objective rotations.", signatureHeroes: ["https://via.placeholder.com/48?text=P2A","https://via.placeholder.com/48?text=P2B","https://via.placeholder.com/48?text=P2C"] },
   { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true, lore: "PlayerThree is a risk-taker with unpredictable flanks.", signatureHeroes: ["https://via.placeholder.com/48?text=P3A","https://via.placeholder.com/48?text=P3B","https://via.placeholder.com/48?text=P3C"] },
   { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true, lore: "PlayerFour brings unmatched consistency.", signatureHeroes: ["https://via.placeholder.com/48?text=P4A","https://via.placeholder.com/48?text=P4B","https://via.placeholder.com/48?text=P4C"] },
@@ -103,7 +103,7 @@ function renderList(filter = "") {
     card.className = "player-row relative overflow-visible";
     const header = document.createElement("div");
     header.className = "flex items-center gap-5 text-lg font-semibold";
-    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4'></span><span class='ml-3'>${player.name}</span>`;
+    header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4 mr-6'></span><span class='ml-4'>${player.name}</span>`;
     card.appendChild(header);
     const tooltipContent = `
       <div style='display:flex; gap:1rem;'>
