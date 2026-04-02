@@ -11,7 +11,6 @@
     body { background: #000; color: #fff; font-family: sans-serif; }
     .bg-gray-850 { background-color: #1e1e2f; }
 
-    /* --- TOOLTIP SYSTEM --- */
     .tooltip-content {
       position: absolute;
       left: 0;
@@ -23,7 +22,7 @@
       transition: opacity 0.25s ease, transform 0.25s ease;
       display: block;
       width: max-content;
-      min-width: 800px; /* increased width */
+      min-width: 800px;
       max-width: 1200px;
       background-color: #111827;
       border: 1px solid #3b82f6;
@@ -33,6 +32,7 @@
       line-height: 1.25rem;
       gap: 1rem;
       visibility: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
     }
 
     .tooltip-content.open {
@@ -42,17 +42,34 @@
       pointer-events: auto;
     }
 
-    .tooltip-left { flex: 0 0 25%; display: flex; flex-direction: column; gap: 0.5rem; }
-    .tooltip-right { flex: 0 0 75%; margin-left: 1rem; }
+    .tooltip-left { flex: 0 0 28%; display: flex; flex-direction: column; gap: 0.75rem; }
+    .tooltip-right { flex: 0 0 72%; margin-left: 1.25rem; }
 
-    .player-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid #444; border-radius: 0.75rem; background-color: #1e1e2f; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: visible; z-index: 1; }
-    .player-row:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(100,150,255,0.6); }
+    .player-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #444;
+      border-radius: 0.75rem;
+      background-color: #1e1e2f;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    .player-row:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(100,150,255,0.6);
+    }
 
     .signature-heroes { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
     .signature-heroes img { width: 48px; height: 48px; border-radius: 0.5rem; object-fit: cover; }
-    .tooltip-rank { font-weight: bold; color: #3b82f6; margin-right: 0.5rem; }
-    .alternate-ids { color: #827ee9; margin-top: 0.5rem; font-size: 0.875rem; }
-    .recommendation { display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem; font-weight: bold; }
+    .tooltip-rank { font-weight: bold; color: #3b82f6; margin-right: 0.5rem; min-width: 2rem; }
+    .alternate-ids { color: #827ee9; margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.45; }
+    .recommendation { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.25rem; font-weight: 700; font-size: 0.9rem; }
     .recommended { color: #22c55e; }
     .not-recommended { color: #ef4444; }
   </style>
@@ -67,13 +84,81 @@
     </div>
   </div>
 <script>
-const players = [
-  { name: "Blodcool", rank: 1, stats: "KDA: 5.2 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 62%", flag: "fi fi-dk", alternateIDs: "AltName1, AltName2", recommended: true, lore: "PlayerOne is known for explosive playmaking and unmatched precision in critical teamfights.", signatureHeroes: ["https://via.placeholder.com/48?text=P1A","https://via.placeholder.com/48?text=P1B","https://via.placeholder.com/48?text=P1C"] },
-  { name: "athleticBird", rank: 2, stats: "KDA: 4.7 | Burst: High | Utility: Medium | Behavior: Neutral | Talent Choices: Defensive | Individual WR%: 58%", flag: "fi fi-de", alternateIDs: "AltName3", recommended: true, lore: "An exceptional player, but more importantly, an even more remarkable individual. Friendly, non-judgmental, and overflowing with positivity, athleticBird embodies good vibes and camaraderie without any ego. He consistently helps create incredible moments while gaming, leading to lasting, cherished memories. Engaging with The Bird isn’t just about gaming; it’s a delightful experience filled with socializing and lively banter. Truly, the hero the HotS community needs—but does not deserve, not by a long shot.", signatureHeroes: ["https://i.postimg.cc/wTpFXrgm/genji.png?text=Genji","https://i.postimg.cc/d1yByGgB/hogger.png?text=Hogger","https://i.postimg.cc/DzQmD0Vg/greymane.png?text=Greymane"] },
-  { name: "PlayerThree", rank: 3, stats: "KDA: 3.1 | Behavior: Aggressive | Talent Choices: Balanced | Individual WR%: 54%", flag: "fi fi-fr", alternateIDs: "AltName4, AltName5", recommended: true, lore: "PlayerThree is a risk-taker with unpredictable flanks.", signatureHeroes: ["https://via.placeholder.com/48?text=P3A","https://via.placeholder.com/48?text=P3B","https://via.placeholder.com/48?text=P3C"] },
-  { name: "PlayerFour", rank: 4, stats: "KDA: 6.0 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 60%", flag: "fi fi-de", alternateIDs: "AltName6", recommended: true, lore: "PlayerFour brings unmatched consistency.", signatureHeroes: ["https://via.placeholder.com/48?text=P4A","https://via.placeholder.com/48?text=P4B","https://via.placeholder.com/48?text=P4C"] },
-  { name: "PlayerFive", rank: 5, stats: "KDA: 2.9 | Utility: High | Teamplay: Excellent | Behavior: Neutral | Talent Choices: Balanced | Individual WR%: 55%", flag: "fi fi-jp", alternateIDs: "AltName7, AltName8", recommended: false, lore: "PlayerFive is a strategic thinker.", signatureHeroes: ["https://via.placeholder.com/48?text=P5A","https://via.placeholder.com/48?text=P5B","https://via.placeholder.com/48?text=P5C"] },
-  { name: "PlayerSix", rank: 6, stats: "KDA: 4.5 | Behavior: Positive | Talent Choices: Aggressive | Individual WR%: 57%", flag: "fi fi-ca", alternateIDs: "AltName9", recommended: true, lore: "PlayerSix blends creativity with discipline.", signatureHeroes: ["https://via.placeholder.com/48?text=P6A","https://via.placeholder.com/48?text=P6B","https://via.placeholder.com/48?text=P6C"] }
+let players = [
+  { name: "Blodcool", rank: 1, flag: "fi fi-dk", stats: "Skill: S | KDA: B | PKill: S | Individual WR%: B | Positioning: B | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "Blodcool", recommended: true, lore: "Blodcool is a highly skilled player in Heroes of the Storm, particularly known for his expertise in the ranged assassin role. His calm and focused playstyle, combined with his ability to perform under pressure, makes him a valuable asset to any team.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/dV0CGqrS/liming.png","https://i.postimg.cc/rwHZRyKq/junkrat.png"] },
+  { name: "athleticBird", rank: 2, flag: "fi fi-de", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: A | Positioning: A | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "", recommended: true, lore: "Friendly, non-judgmental, and overflowing with positivity, athleticBird embodies good vibes and camaraderie without ego.", signatureHeroes: ["https://i.postimg.cc/DzQmD0Vg/greymane.png","https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/d1yByGgB/hogger.png"] },
+  { name: "Gaflo", rank: 3, flag: "fi fi-de", stats: "Skill: S | KDA: B | PKill: S | Individual WR%: A | Positioning: B | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "Gaflo", recommended: true, lore: "Gaflo is one of the kindest, most easy-going and skilled players in the list, with great communication and calm demeanor.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/DzQmD0Vg/greymane.png"] },
+  { name: "QopenHagen", rank: 4, flag: "fi fi-no", stats: "Skill: S | KDA: A | PKill: A | Individual WR%: S | Positioning: A | Talent Choices: S | Social: S | Behavior: A", alternateIDs: "GGQopen, nineteenCM, Queen, AraAra, QopenHagLFT, Gaylord, LisanAlGaib", recommended: true, lore: "Perhaps the best offlaner in the game. His talents are undeniable, though frustration can sometimes get the better of him.", signatureHeroes: ["https://i.postimg.cc/ZnL68HHr/blaze.png","https://i.postimg.cc/d1yByGgB/hogger.png","https://i.postimg.cc/yYVm1q6n/samuro.png"] },
+  { name: "Iksir", rank: 5, flag: "fi fi-fr", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: S | Positioning: C | Talent Choices: S | Social: C | Behavior: A", alternateIDs: "", recommended: true, lore: "Iksir is a highly skilled healer/support player with strong game sense, though socially more reserved than most.", signatureHeroes: ["https://i.postimg.cc/fRpgFW7J/ana.png","https://i.postimg.cc/FKt1Kcgm/lucio.png","https://i.postimg.cc/kGnQZWR7/zarya.png"] },
+  { name: "KommanderRex", rank: 6, flag: "fi fi-de", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: S | Positioning: A | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "", recommended: true, lore: "A competitive and highly skilled player who brings a positive and reliable presence to any team.", signatureHeroes: ["https://i.postimg.cc/bJvYBJYK/zeratul.png","https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/25x95dRB/chromie.png"] },
+  { name: "STÖRMSvamp", rank: 7, flag: "fi fi-se", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: B | Positioning: S | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "Svampgrotta, STÖRMSvamp, HIMONKEYS, AYAYARR", recommended: true, lore: "A highly skilled solo laner and one of the top Swedish HotS players, known for consistently strong performances.", signatureHeroes: ["https://i.postimg.cc/ZnL68HHr/blaze.png","https://i.postimg.cc/7LPbFDxr/dehaka.png","https://i.postimg.cc/d1yByGgB/hogger.png"] },
+  { name: "TheLegend27", rank: 8, flag: "fi fi-dk", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: A | Positioning: A | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "NightNight, TheLegend27, SoyBoy69LFT", recommended: true, lore: "A standout player and exceptional human being who has contributed to countless positive-impact moments in the community.", signatureHeroes: ["https://i.postimg.cc/bJvYBJYK/zeratul.png","https://i.postimg.cc/fWgdNVFW/kerrigan.png","https://i.postimg.cc/X7YhBC1M/sylvanas.png"] },
+  { name: "EggFriedRice", rank: 9, flag: "fi fi-bg", stats: "Skill: S | KDA: S | PKill: S | Individual WR%: A | Positioning: S | Talent Choices: S | Social: S | Behavior: A", alternateIDs: "EggFriedRice, TheFinalBoss, zero", recommended: true, lore: "A consistently strong support player with fast reactions, strong awareness, and excellent integrity in games.", signatureHeroes: ["https://i.postimg.cc/pdkw9JQF/abathur.png","https://i.postimg.cc/CLzKHJcS/brightwing.png","https://i.postimg.cc/cHWwgfmf/tyrande.png"] },
+  { name: "TLHasuObs", rank: 10, flag: "fi fi-de", stats: "Skill: S | KDA: B | PKill: A | Individual WR%: A | Positioning: A | Talent Choices: S | Social: S | Behavior: S", alternateIDs: "", recommended: true, lore: "One of the pillars keeping HotS alive, with deep knowledge and an extremely positive impact on the community.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/rwHZRyKq/junkrat.png","https://i.postimg.cc/C5215B53/thelostvikings.png"] },
+  { name: "Chelvin", rank: 11, flag: "fi fi-nl", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: A | Positioning: S | Talent Choices: S | Social: A | Behavior: B", alternateIDs: "Chelvin, ZENChelvin", recommended: true, lore: "A remarkable and highly skilled player acknowledged by veterans of the game.", signatureHeroes: ["https://i.postimg.cc/DzQmD0Vg/greymane.png","https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/TPwK5CM8/maiev.png"] },
+  { name: "HunterOrc", rank: 12, flag: "fi fi-tr", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: A | Positioning: A | Talent Choices: A | Social: A | Behavior: A", alternateIDs: "", recommended: true, lore: "A funny and wholesome individual who brings joy to games, even if he can be stubborn about talents.", signatureHeroes: ["https://i.postimg.cc/FKt1Kcgm/lucio.png","https://i.postimg.cc/k4gCMXZq/anduin.png","https://i.postimg.cc/CLzKHJcS/brightwing.png"] },
+  { name: "Sobb", rank: 13, flag: "fi fi-eu", stats: "Skill: A | KDA: B | PKill: S | Individual WR%: A | Positioning: A | Talent Choices: A | Social: A | Behavior: S", alternateIDs: "", recommended: true, lore: "A very non-judgmental, friendly and open-minded person, and a reliable player with a standout Probius.", signatureHeroes: ["https://i.postimg.cc/QCmcQVtV/Probius-Hero-Portrait.png","https://i.postimg.cc/cHWwgfmf/tyrande.png","https://i.postimg.cc/dV0CGqrS/liming.png"] },
+  { name: "Disciple", rank: 14, flag: "fi fi-ro", stats: "Skill: S | KDA: B | PKill: A | Individual WR%: S | Positioning: C | Talent Choices: S | Social: B | Behavior: B", alternateIDs: "MarlKarcs, Disciple, Malenia, Miquella, KarlMarcs, Sinny", recommended: true, lore: "A highly skilled player with strong strategic grasp, but prone to tilt and frustration.", signatureHeroes: ["https://i.postimg.cc/dV0CGqrS/liming.png","https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/zfy0Ss98/orphea.png"] },
+  { name: "Nano", rank: 15, flag: "fi fi-es", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: A | Positioning: B | Talent Choices: S | Social: A | Behavior: C", alternateIDs: "Nano, HPTNano", recommended: true, lore: "A mechanically skilled player with deep passion for the game, though more emotionally volatile in recent times.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/dV0CGqrS/liming.png","https://i.postimg.cc/25x95dRB/chromie.png"] },
+  { name: "Twice", rank: 16, flag: "fi fi-pl", stats: "Skill: S | KDA: B | PKill: S | Individual WR%: A | Positioning: A | Talent Choices: S | Social: B | Behavior: C", alternateIDs: "Twice, Mimikkyu, Birch", recommended: true, lore: "Strong game sense and solid mechanics, but also a bad temper.", signatureHeroes: ["https://i.postimg.cc/ydB3Y9ht/diablo.png","https://i.postimg.cc/TPwK5CM8/maiev.png","https://i.postimg.cc/C5c2yRzn/hanzo.png"] },
+  { name: "Hiraeth", rank: 17, flag: "fi fi-nl", stats: "Skill: S | KDA: B | PKill: A | Individual WR%: A | Positioning: B | Talent Choices: S | Social: D | Behavior: B", alternateIDs: "", recommended: true, lore: "A truly gifted and reliable player who can push teammates to their limits, though with weak social skills.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/bJvYBJYK/zeratul.png","https://i.postimg.cc/wTpFXrgm/genji.png"] },
+  { name: "Sven", rank: 18, flag: "fi fi-se", stats: "Skill: A | KDA: C | PKill: A | Individual WR%: B | Positioning: C | Talent Choices: S | Social: A | Behavior: A", alternateIDs: "GGlaive, Sven, DauntlessX", recommended: true, lore: "A welcoming, open-minded and genuinely friendly veteran presence in the scene.", signatureHeroes: ["https://i.postimg.cc/d1yByGgB/hogger.png","https://i.postimg.cc/8C5DNzxD/sonya.png","https://i.postimg.cc/C5215B53/thelostvikings.png"] },
+  { name: "Aestro", rank: 19, flag: "fi fi-kz", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: C | Positioning: B | Talent Choices: A | Social: S | Behavior: A", alternateIDs: "", recommended: true, lore: "A chill and friendly player who makes it easy to have a good time in casual games.", signatureHeroes: ["https://i.postimg.cc/25x95dRB/chromie.png","https://i.postimg.cc/v8Chb2gN/imperius.png","https://i.postimg.cc/C1q3xB7y/yrel.png"] },
+  { name: "Deathknight", rank: 20, flag: "fi fi-de", stats: "Skill: S | KDA: A | PKill: S | Individual WR%: C | Positioning: A | Talent Choices: S | Social: B | Behavior: B", alternateIDs: "", recommended: true, lore: "A highly private and selective individual who prefers gaming with a close-knit group.", signatureHeroes: ["https://i.postimg.cc/1zDYmC8Q/garrosh.png","https://i.postimg.cc/ydB3Y9ht/diablo.png","https://i.postimg.cc/HnJ9gX95/etc.png"] },
+  { name: "Ruutek", rank: 21, flag: "fi fi-pl", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: B | Positioning: A | Talent Choices: S | Social: A | Behavior: S", alternateIDs: "", recommended: true, lore: "A remarkable healer with exceptional positioning and dependable support play.", signatureHeroes: ["https://i.postimg.cc/fRpgFW7J/ana.png","https://i.postimg.cc/Kjs8hgv6/malfurion.png","https://i.postimg.cc/FKt1Kcgm/lucio.png"] },
+  { name: "Vergil", rank: 22, flag: "fi fi-ua", stats: "Skill: A | KDA: C | PKill: B | Individual WR%: C | Positioning: A | Talent Choices: S | Social: A | Behavior: A", alternateIDs: "", recommended: true, lore: "A friendly and sociable player who fills roles willingly and maintains a composed demeanor.", signatureHeroes: ["https://i.postimg.cc/yxN0T9bt/chen.png","https://i.postimg.cc/ZnL68HHr/blaze.png","https://i.postimg.cc/CLppQNNj/rexxar.png"] },
+  { name: "Tirîgon", rank: 23, flag: "fi fi-de", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: A | Positioning: C | Talent Choices: A | Social: S | Behavior: S", alternateIDs: "Tirîgon, Gengar, Carmondai", recommended: true, lore: "An excellent teammate with one of the most easy-going and friendly personalities you could encounter.", signatureHeroes: ["https://i.postimg.cc/J4ckvpbJ/rehgar.png","https://i.postimg.cc/1XXj28dV/stukov.png","https://i.postimg.cc/52QMjRnQ/kaelthas.png"] },
+  { name: "Tapajoey", rank: 24, flag: "fi fi-ch", stats: "Skill: A | KDA: A | PKill: A | Individual WR%: S | Positioning: S | Talent Choices: S | Social: A | Behavior: S", alternateIDs: "", recommended: true, lore: "A positive and skilled individual who helps create delightful memories while playing together.", signatureHeroes: ["https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/906xrJxC/alarak.png"] },
+  { name: "LegendaryBBQ", rank: 25, flag: "fi fi-se", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: A | Positioning: A | Talent Choices: A | Social: A | Behavior: S", alternateIDs: "", recommended: true, lore: "Grouping up with LegendaryBBQ generally guarantees good times and enjoyable experiences.", signatureHeroes: ["https://i.postimg.cc/906xrJxC/alarak.png","https://i.postimg.cc/jjmj1f2B/butcher.png","https://i.postimg.cc/vBm9tbJm/falstad.png"] },
+  { name: "Serdath", rank: 26, flag: "fi fi-vn", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Serdath is included in the most recent player list and kept editable here for full manual refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Alya", rank: 27, flag: "fi fi-fr", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: B | Positioning: A | Talent Choices: S | Social: A | Behavior: A", alternateIDs: "", recommended: true, lore: "A selfless and proficient healer and a great teammate to have.", signatureHeroes: ["https://i.postimg.cc/fRpgFW7J/ana.png","https://i.postimg.cc/WztJZVDP/whitemane.png","https://i.postimg.cc/25x95dRB/chromie.png"] },
+  { name: "Sugårdaddy69", rank: 28, flag: "fi fi-de", stats: "Skill: B | KDA: C | PKill: B | Individual WR%: C | Positioning: C | Talent Choices: B | Social: A | Behavior: S", alternateIDs: "BOSSBANGER, Sugårdaddy69, Avocadorable", recommended: true, lore: "A very kind and understanding individual who doesn’t take many things seriously and can still be enjoyable to play with.", signatureHeroes: ["https://i.postimg.cc/7LPbFDxr/dehaka.png","https://i.postimg.cc/1zDYmC8Q/garrosh.png","https://i.postimg.cc/DzQmD0Vg/greymane.png"] },
+  { name: "Guillaume", rank: 29, flag: "fi fi-fr", stats: "Skill: A | KDA: A | PKill: A | Individual WR%: C | Positioning: B | Talent Choices: A | Social: B | Behavior: C", alternateIDs: "CloWnGe, Guillaume", recommended: true, lore: "Guillaume helps bring a positive atmosphere, spreading good vibes only. It is extremely unlikely that one would ever have negative feelings towards him.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Pudgenox", rank: 30, flag: "fi fi-il", stats: "Skill: A | KDA: B | PKill: A | Individual WR%: C | Positioning: B | Talent Choices: A | Social: A | Behavior: A", alternateIDs: "Pudgenox", recommended: true, lore: "Pudgenox is a friendly and respectful person who is a delight to play with—as long as he sticks to the picks he knows best.", signatureHeroes: ["https://i.postimg.cc/yYVm1q6n/samuro.png","https://i.postimg.cc/7LPbFDxr/dehaka.png","https://i.postimg.cc/hGrrbSGJ/anub.png"] },
+  { name: "Minimilk", rank: 31, flag: "fi fi-es", stats: "Skill: A | KDA: B | PKill: B | Individual WR%: C | Positioning: B | Talent Choices: A | Social: S | Behavior: C", alternateIDs: "", recommended: true, lore: "Minimilk has a remarkable skill set, but his gameplay is often characterized by a trolling approach that can turn some matches into disasters.", signatureHeroes: ["https://i.postimg.cc/bJvYBJYK/zeratul.png","https://i.postimg.cc/QdF60tBg/gall.png","https://i.postimg.cc/PqVnNMhR/auriel.png"] },
+  { name: "Nítram", rank: 32, flag: "fi fi-se", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Nítram is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Xen", rank: 33, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Xen is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "SomeoneNew", rank: 34, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "SomeoneNew is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "BrbSoaking", rank: 35, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "BrbSoaking is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Deviant", rank: 36, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Deviant is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Déjàvu", rank: 37, flag: "fi fi-eu", stats: "Skill: A | KDA: A | PKill: A | Individual WR%: C | Positioning: B | Talent Choices: A | Social: B | Behavior: C", alternateIDs: "GrumpyAlpaca, apollyon, Déjàvu, DeepMe, Ɣåłhåłłå", recommended: true, lore: "GrumpyAlpaca is generally a relaxed and enjoyable presence, though smurfing and farming easy wins has significantly diminished his abilities.", signatureHeroes: ["https://i.postimg.cc/1XN6nMFR/kel.png","https://i.postimg.cc/906xrJxC/alarak.png","https://i.postimg.cc/zfy0Ss98/orphea.png"] },
+  { name: "EDGYDERE", rank: 38, flag: "fi fi-se", stats: "Skill: B | KDA: B | PKill: B | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "EDGYDERE is included in the latest data file and partially recovered from the most recent upload.", signatureHeroes: ["https://i.postimg.cc/rwHZRyKq/junkrat.png","https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/kGwt64Ms/valla.png"] },
+  { name: "Valnød", rank: 39, flag: "fi fi-no", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Valnød is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "gaarapowerx", rank: 40, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "gaarapowerx is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Legaman", rank: 41, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Legaman is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "SIMPorky", rank: 42, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "SIMPorky is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Aumnescio", rank: 43, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Aumnescio is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Makto", rank: 44, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Makto is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Baldersson", rank: 45, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Baldersson is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "fishNchips", rank: 46, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "fishNchips is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Revan", rank: 47, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Revan is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://i.postimg.cc/TPwK5CM8/maiev.png","https://i.postimg.cc/Kjs8hgv6/malfurion.png","https://i.postimg.cc/CLppQNNj/rexxar.png"] },
+  { name: "OBZ", rank: 48, flag: "fi fi-ru", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "OBZ is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://i.postimg.cc/TPwK5CM8/maiev.png","https://i.postimg.cc/Kjs8hgv6/malfurion.png","https://i.postimg.cc/CLppQNNj/rexxar.png"] },
+  { name: "Fabled", rank: 49, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: true, lore: "Fabled is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Nidorya", rank: 50, flag: "fi fi-fr", stats: "Skill: B | KDA: C | PKill: C | Individual WR%: C | Positioning: C | Talent Choices: A | Social: C | Behavior: C", alternateIDs: "TalentBuild, Nidorya, Diablorya", recommended: true, lore: "Nidorya’s behavior can sometimes shift to toxicity. Nonetheless, his technical abilities as a healer are well-regarded.", signatureHeroes: ["https://i.postimg.cc/WztJZVDP/whitemane.png","https://i.postimg.cc/k4gCMXZq/anduin.png","https://i.postimg.cc/x8dFbXyT/alex.png"] },
+  { name: "BadBunnyxx", rank: 51, flag: "fi fi-de", stats: "Skill: B | KDA: D | PKill: B | Individual WR%: B | Positioning: D | Talent Choices: B | Social: C | Behavior: D", alternateIDs: "BadBunnyxx, Woodgaynr, ImpactInter, Johnny, TheChosenOne, yåkuzå, SoldierBoy, JohnnyCash, Ĭĸårus, Damaged, Bveckdich, Madness, QMwonderkid", recommended: false, lore: "BadBunnyxx has shown noticeable growth and meaningful change over time, becoming calmer and more receptive to feedback than before.", signatureHeroes: ["https://i.postimg.cc/SKL7rmg0/fenix.png","https://i.postimg.cc/CLppQNNj/rexxar.png","https://i.postimg.cc/TPwK5CM8/maiev.png"] },
+  { name: "VentedSun", rank: 52, flag: "fi fi-gb", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "JumpyWizard", recommended: false, lore: "VentedSun is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "witchet", rank: 53, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "witchet is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "purplepurple", rank: 54, flag: "fi fi-il", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "purplepurple is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Woodganyr", rank: 55, flag: "fi fi-de", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Woodganyr is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Squadra", rank: 56, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Squadra is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Verrix", rank: 57, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Verrix is an unreliable and challenging teammate with disregard for teamwork and a tendency to act impulsively, making him a liability.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "dudemanguy", rank: 58, flag: "fi fi-eu", stats: "Skill: C | KDA: F | PKill: C | Individual WR%: C | Positioning: F | Talent Choices: B | Social: B | Behavior: C", alternateIDs: "", recommended: false, lore: "dudemanguy frequently engages headfirst without much thought, resulting in many deaths and jeopardizing advantages his team has secured.", signatureHeroes: ["https://i.postimg.cc/TPwK5CM8/maiev.png","https://i.postimg.cc/DzQmD0Vg/greymane.png","https://i.postimg.cc/T38SwYSg/illidan.png"] },
+  { name: "Elitesparkle", rank: 59, flag: "fi fi-it", stats: "Skill: D | KDA: D | PKill: C | Individual WR%: C | Positioning: C | Talent Choices: B | Social: A | Behavior: C", alternateIDs: "", recommended: false, lore: "Elitesparkle is an underwhelming player whose performance consistently falls below the expected standard despite appearances.", signatureHeroes: ["https://i.postimg.cc/1XvvKy5R/johanna.png","https://i.postimg.cc/ydB3Y9ht/diablo.png","https://i.postimg.cc/HnJ9gX95/etc.png"] },
+  { name: "uCANTstopME", rank: 60, flag: "fi fi-de", stats: "Skill: C | KDA: F | PKill: B | Individual WR%: D | Positioning: C | Talent Choices: B | Social: D | Behavior: F", alternateIDs: "", recommended: false, lore: "uCANTstopME is noted for flaming, spam-pinging, poor positioning, and refusing to adapt or learn from mistakes.", signatureHeroes: ["https://i.postimg.cc/X7YhBC1M/sylvanas.png","https://i.postimg.cc/kGwt64Ms/valla.png","https://i.postimg.cc/ydB3Y9ht/diablo.png"] },
+  { name: "Master1k", rank: 61, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Master1k is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "KingRiku", rank: 62, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "KingRiku is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "NapoleonGG", rank: 63, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "NapoleonGG is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "NoXoMo", rank: 64, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "NoXoMo is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "Jozefxdark", rank: 65, flag: "fi fi-eu", stats: "Skill: F | KDA: F | PKill: D | Individual WR%: C | Positioning: D | Talent Choices: B | Social: B | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Jozefxdark consistently performs below the expected standards for skill rating, with extremely poor mechanics and contribution.", signatureHeroes: ["https://i.postimg.cc/rwbpnMWF/malganis.png","https://i.postimg.cc/rwbpnMWF/malganis.png","https://i.postimg.cc/rwbpnMWF/malganis.png"] },
+  { name: "Playé", rank: 66, flag: "fi fi-fr", stats: "Skill: C | KDA: F | PKill: B | Individual WR%: C | Positioning: F | Talent Choices: B | Social: D | Behavior: F", alternateIDs: "YoneOTP, Playé", recommended: false, lore: "Playé is known for reckless and unsportsmanlike conduct, often creating a negative experience for others in the game.", signatureHeroes: ["https://i.postimg.cc/dV0CGqrS/liming.png","https://i.postimg.cc/bJvYBJYK/zeratul.png","https://i.postimg.cc/XNBhfC9t/tracer.png"] },
+  { name: "Eowea", rank: 67, flag: "fi fi-fr", stats: "Skill: C | KDA: D | PKill: C | Individual WR%: C | Positioning: C | Talent Choices: B | Social: D | Behavior: F", alternateIDs: "Eowea, C3P0", recommended: false, lore: "Eowea is a very arrogant, inconsiderate and cocky griefer who will openly ruin games for his own amusement and mock teammates.", signatureHeroes: ["https://i.postimg.cc/fRpgFW7J/ana.png","https://i.postimg.cc/1XXj28dV/stukov.png","https://i.postimg.cc/J4ckvpbJ/rehgar.png"] },
+  { name: "MontanaHOTS", rank: 68, flag: "fi fi-pl", stats: "Skill: D | KDA: F | PKill: D | Individual WR%: F | Positioning: D | Talent Choices: B | Social: D | Behavior: C", alternateIDs: "Montana, OneOfAKind, MontanaHOTS, Orimonic, M0NTANA, Frigida, HiHowAreYou", recommended: false, lore: "MontanaHOTS is not overtly toxic in behavior, but his extreme self-delusion creates a toxic atmosphere and undermines credibility.", signatureHeroes: ["https://i.postimg.cc/ydB3Y9ht/diablo.png","https://i.postimg.cc/SxLbWMbm/stitches.png","https://i.postimg.cc/kG2bkCvg/nazeebo.png"] },
+  { name: "Razhag", rank: 69, flag: "fi fi-eu", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "Razhag is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "angela", rank: 70, flag: "fi fi-fr", stats: "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a", alternateIDs: "", recommended: false, lore: "angela is included in the latest data file and kept editable here for refinement.", signatureHeroes: ["https://via.placeholder.com/48?text=H1","https://via.placeholder.com/48?text=H2","https://via.placeholder.com/48?text=H3"] },
+  { name: "ImNewhere", rank: 71, flag: "fi fi-eu", stats: "Skill: C | KDA: C | PKill: C | Individual WR%: n/a | Positioning: C | Talent Choices: B | Social: F | Behavior: F", alternateIDs: "BPRaîku, MytiC, Mÿtic, ImNewhere, SrMamut, Hyp3R, Player", recommended: false, lore: "A highly toxic and manipulative presence associated with wintrading, boosting, deceptive behavior, and repeated harassment from multiple accounts.", signatureHeroes: ["https://i.postimg.cc/XNBhfC9t/tracer.png","https://i.postimg.cc/fL8YmfqP/kelthuzad.png","https://i.postimg.cc/dV0CGqrS/liming.png"] },
+  { name: "Tychessa", rank: 72, flag: "fi fi-gb", stats: "Skill: B | KDA: C | PKill: B | Individual WR%: F | Positioning: C | Talent Choices: B | Social: F | Behavior: F", alternateIDs: "Tychessa, Valthonis, MaxVSTruth, HPTNano, Rascal, Valaar, Jack", recommended: false, lore: "Tychessa has repeatedly demonstrated a pattern of severe toxicity that goes well beyond ordinary frustration or poor sportsmanship.", signatureHeroes: ["https://i.postimg.cc/wTpFXrgm/genji.png","https://i.postimg.cc/C5c2yRzn/hanzo.png","https://i.postimg.cc/FKt1Kcgm/lucio.png"] },
+  { name: "BETRÜGER", rank: 73, flag: "fi fi-de", stats: "Skill: B | KDA: C | PKill: C | Individual WR%: C | Positioning: C | Talent Choices: C | Social: F | Behavior: F", alternateIDs: "BETRÜGER, BETRUEGERXD, lol, SCRIPT, Fiahrket, vRAM, Doddir, Famat, Rilll", recommended: false, lore: "BETRÜGER is portrayed as an extremely toxic player who blames teammates, harasses others, and is widely suspected by respected players of using scripts.", signatureHeroes: ["https://i.postimg.cc/XNBhfC9t/tracer.png","https://i.postimg.cc/fL8YmfqP/kelthuzad.png","https://i.postimg.cc/dV0CGqrS/liming.png"] },
+  { name: "Shando", rank: 74, flag: "fi fi-ch", stats: "Skill: B | KDA: C | PKill: B | Individual WR%: B | Positioning: C | Talent Choices: B | Social: F | Behavior: F", alternateIDs: "Shando, Elune, Cronaz, Illidari, Kaldorei, UltraliskPDF", recommended: false, lore: "Shando is described as one of the most toxic figures in online gaming, repeatedly sending abusive messages, griefing games, and openly admitting to sabotaging matches.", signatureHeroes: ["https://i.postimg.cc/Kjs8hgv6/malfurion.png","https://i.postimg.cc/hGrrbSGJ/anub.png","https://i.postimg.cc/J4ckvpbJ/rehgar.png"] }
 ];
 
 const container = document.getElementById("playerList");
@@ -85,53 +170,137 @@ Object.assign(globalTooltip.style, { position: "fixed", top: "0px", left: "0px",
 document.body.appendChild(globalTooltip);
 
 function showTooltip(content, row) {
-  globalTooltip.innerHTML = content;
-  globalTooltip.classList.add("open");
-  globalTooltip.style.pointerEvents = "auto";
-  const rect = row.getBoundingClientRect();
-  globalTooltip.style.top = rect.bottom + 8 + "px";
-  globalTooltip.style.left = rect.left + "px";
+  try {
+    globalTooltip.innerHTML = content;
+    globalTooltip.classList.add("open");
+    globalTooltip.style.pointerEvents = "auto";
+
+    const rect = row.getBoundingClientRect();
+    const tooltipWidth = 820;
+    const tooltipHeight = 360;
+    const left = Math.max(12, Math.min(rect.left, window.innerWidth - tooltipWidth - 12));
+    const top = Math.max(12, Math.min(rect.bottom + 8, window.innerHeight - tooltipHeight - 12));
+
+    globalTooltip.style.left = `${left}px`;
+    globalTooltip.style.top = `${top}px`;
+  } catch (error) {
+    console.error("Tooltip render error:", error);
+  }
 }
 
-function hideTooltip() { globalTooltip.classList.remove("open"); globalTooltip.style.pointerEvents = "none"; }
+function hideTooltip() {
+  globalTooltip.classList.remove("open");
+  globalTooltip.style.pointerEvents = "none";
+}
+
+function prettyLabel(label) {
+  if (label === "Skill") return "Skill Level";
+  if (label === "PKill") return "Kill Participation";
+  if (label === "Talent Choices") return "Talent Success Rate";
+  return label || "Unknown";
+}
+
+function normalizeStats(stats) {
+  if (typeof stats !== "string" || !stats.trim()) {
+    return "Skill: n/a | KDA: n/a | PKill: n/a | Individual WR%: n/a | Positioning: n/a | Talent Choices: n/a | Social: n/a | Behavior: n/a";
+  }
+  return stats;
+}
+
+function normalizeHeroes(heroes) {
+  if (!Array.isArray(heroes) || heroes.length === 0) {
+    return [
+      "https://via.placeholder.com/48?text=H1",
+      "https://via.placeholder.com/48?text=H2",
+      "https://via.placeholder.com/48?text=H3"
+    ];
+  }
+  return heroes.slice(0, 3);
+}
+
+function sanitizePlayer(player, fallbackRank) {
+  return {
+    name: typeof player?.name === "string" && player.name.trim() ? player.name : `Player ${fallbackRank}`,
+    rank: Number.isFinite(player?.rank) ? player.rank : fallbackRank,
+    flag: typeof player?.flag === "string" && player.flag.trim() ? player.flag : "fi fi-eu",
+    stats: normalizeStats(player?.stats),
+    alternateIDs: typeof player?.alternateIDs === "string" ? player.alternateIDs : "",
+    recommended: Boolean(player?.recommended),
+    lore: typeof player?.lore === "string" && player.lore.trim() ? player.lore : "No description available yet.",
+    signatureHeroes: normalizeHeroes(player?.signatureHeroes)
+  };
+}
+
+players = Array.isArray(players) ? players.map((player, index) => sanitizePlayer(player, index + 1)) : [];
+
+function statsHtml(stats) {
+  return normalizeStats(stats).split(" | ").map(stat => {
+    const [label, value = "n/a"] = stat.split(": ");
+    return `<div style="color:#cbd5e1; font-size:0.8rem; letter-spacing:0.01em;">${prettyLabel(label)}</div><div style="color:#f8fafc; font-weight:700; font-size:0.82rem; text-align:right; min-width:1.5rem;">${value}</div>`;
+  }).join("");
+}
 
 function renderList(filter = "") {
+  if (!container) return;
   container.innerHTML = "";
-  const filtered = players.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.stats.toLowerCase().includes(filter.toLowerCase()));
+
+  const lowered = String(filter || "").toLowerCase();
+  const filtered = players.filter(player =>
+    [player.name, player.stats, player.alternateIDs, player.lore].join(" ").toLowerCase().includes(lowered)
+  );
+
   filtered.forEach(player => {
     const card = document.createElement("div");
     card.className = "player-row relative overflow-visible";
+
     const header = document.createElement("div");
     header.className = "flex items-center gap-5 text-lg font-semibold";
     header.innerHTML = `<span class='tooltip-rank'>#${player.rank}</span><span class='${player.flag} w-6 h-4 mr-6'></span><span class='ml-4'>${player.name}</span>`;
     card.appendChild(header);
+
     const tooltipContent = `
-      <div style='display:flex; gap:1rem;'>
+      <div style='display:flex; gap:1.25rem; align-items:flex-start;'>
         <div class='tooltip-left'>
-          <div class="font-medium text-gray-100 flex items-center gap-4"><span class='${player.flag} w-6 h-4'></span> ${player.name} — #${player.rank}</div>
-          <div class="mt-1 text-blue-200">${player.stats}</div>
+          <div class="font-medium text-gray-100 flex items-center gap-4" style="font-size:1rem;"><span class='${player.flag} w-6 h-4'></span> ${player.name} - #${player.rank}</div>
+          <div class="stats-grid" style="display:grid; grid-template-columns: 1fr auto; gap:0.45rem 0.9rem; padding:0.85rem 0.95rem; background:rgba(255,255,255,0.03); border:1px solid rgba(96,165,250,0.18); border-radius:0.8rem;">
+            ${statsHtml(player.stats)}
+          </div>
           <div class="recommendation ${player.recommended ? 'recommended' : 'not-recommended'}">
             <span>${player.recommended ? '👍' : '👎'}</span> ${player.recommended ? 'Recommended' : 'Not Recommended'}
           </div>
-          <div class="mt-2 font-semibold text-gray-200">Signature Heroes:</div>
-          <div class="signature-heroes">
-            ${player.signatureHeroes.map(src => `<img src='${src}'>`).join('')}
-          </div>
-          <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs}</div>
+          <div class="mt-1 font-semibold text-gray-200" style="font-size:0.92rem;">Signature Heroes</div>
+          <div class="signature-heroes">${player.signatureHeroes.map(src => `<img src='${src}' alt='Hero portrait'>`).join("")}</div>
         </div>
         <div class='tooltip-right'>
-          <div class='text-gray-300 text-sm mt-1'>${player.lore}</div>
+          <div class='text-gray-300 text-sm mt-1' style='line-height:1.65;'>${player.lore}</div>
+          <div class='alternate-ids'>Alternate IDs: ${player.alternateIDs || '—'}</div>
         </div>
-      </div>
-    `;
-    card.addEventListener('mouseenter', () => showTooltip(tooltipContent, card));
-    card.addEventListener('mouseleave', hideTooltip);
+      </div>`;
+
+    card.addEventListener("mouseenter", () => showTooltip(tooltipContent, card));
+    card.addEventListener("mouseleave", hideTooltip);
     container.appendChild(card);
   });
 }
 
-searchInput.addEventListener("input", e => { renderList(e.target.value); });
-renderList();
+if (searchInput) {
+  searchInput.addEventListener("input", e => renderList(e.target.value));
+}
+window.addEventListener("resize", hideTooltip);
+window.addEventListener("scroll", hideTooltip, { passive: true });
+
+try {
+  renderList();
+} catch (error) {
+  console.error("Initial render failed:", error);
+  if (container) {
+    container.innerHTML = `<div style="padding:1rem; border:1px solid #7f1d1d; border-radius:0.75rem; background:#1f1111; color:#fecaca;">The player list failed to render. Check the browser console for details.</div>`;
+  }
+}
+
+console.assert(Array.isArray(players), "players should be an array");
+console.assert(players.length === 74, "Expected 74 players to render");
+console.assert(document.getElementById("playerList"), "playerList container must exist");
 </script>
 </body>
 </html>
